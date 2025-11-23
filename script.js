@@ -5,11 +5,13 @@ const ctx = canvas.getContext('2d');
 const ballRadius = 12;
 
 class Horse {
-    constructor(number, color) {
+    constructor(number, color, textColor, initX, initY) {
         this.number = number;
         this.color = color;
-        this.x = canvas.width / 2;
-        this.y = canvas.height - 30;
+        this.textColor = textColor;
+        this.x = initX;
+        this.y = initY;
+
         this.dx = 2;
         this.dy = -2;
         this.canvas = this.createOffscreenCanvas();
@@ -18,13 +20,12 @@ class Horse {
     createOffscreenCanvas() {
         const horseCanvas = document.createElement('canvas');
         const horseCtx = horseCanvas.getContext('2d');
-        const initX = 20;
-        const initY = 20;
         const ballInnerRadius = 10;
+        const ballSize = ballRadius * 2;
 
         // Draw the ball onto the off-screen canvas
         horseCtx.beginPath();
-        horseCtx.arc(initX, initY, ballInnerRadius, 0, Math.PI * 2);
+        horseCtx.arc(ballSize, ballSize, ballInnerRadius, 0, Math.PI * 2);
         horseCtx.fillStyle = this.color;
         horseCtx.fill();
         horseCtx.closePath();
@@ -33,12 +34,12 @@ class Horse {
         horseCtx.font = "10px Arial";
         horseCtx.textAlign = "center";
         horseCtx.textBaseline = "middle";
-        horseCtx.fillStyle = "#FFFFFF";
-        horseCtx.fillText(this.number, initX, initY);
+        horseCtx.fillStyle = this.textColor;
+        horseCtx.fillText(this.number, ballSize, ballSize);
 
         // Draw the outer circle
         horseCtx.beginPath();
-        horseCtx.arc(initX, initY, ballRadius, 0.15 * Math.PI, 1.85 * Math.PI); // Radius 12px
+        horseCtx.arc(ballSize, ballSize, ballRadius, 0.15 * Math.PI, 1.85 * Math.PI); // Radius 12px
         horseCtx.strokeStyle = this.color;
         horseCtx.lineWidth = 1; // 1px width
         horseCtx.stroke();
@@ -47,8 +48,8 @@ class Horse {
         // Draw the small triangle to the right of the ball
         const triangleBase = 6;
         const triangleHeight = 8;
-        const triangleX = initX + ballRadius - 1; // Position to the right of the outer circle + a small gap
-        const triangleY = initY;
+        const triangleX = ballSize + ballRadius - 1; // Position to the right of the outer circle + a small gap
+        const triangleY = ballSize;
 
         horseCtx.beginPath();
         horseCtx.moveTo(triangleX, triangleY - triangleHeight / 2); // Top point
@@ -79,8 +80,14 @@ class Horse {
 }
 
 const horses = [
-    new Horse("1", "white"),
-    new Horse("1", "black")
+    new Horse("1", "white", "black", 10, 10),
+    new Horse("2", "black", "white", 25, 25),
+    new Horse("3", "red", "white", 10, 30),
+    new Horse("4", "blue", "white", 10, 50),
+    new Horse("5", "yellow", "black", 30, 60),
+    new Horse("6", "green", "white", 40, 10),
+    new Horse("7", "orange", "white", 70, 10),
+    new Horse("8", "pink", "white", 60, 20),
 ];
 
 function update() {
