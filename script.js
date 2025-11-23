@@ -67,7 +67,7 @@ recordButton.addEventListener('click', () => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'hoge.mp4';
+            a.download = `animation_${timestamp}.mp4`;
             a.click();
             URL.revokeObjectURL(url);
             recordedChunks = [];
