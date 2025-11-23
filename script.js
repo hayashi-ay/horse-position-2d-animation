@@ -12,12 +12,36 @@ let mediaRecorder;
 let recordedChunks = [];
 let isRecording = false;
 
+// Create an off-screen canvas for pre-rendering the ball
+const ballCanvas = document.createElement('canvas');
+const ballCtx = ballCanvas.getContext('2d');
+const ballSize = ballRadius * 2;
+ballCanvas.width = ballSize;
+ballCanvas.height = ballSize;
+
+function createBallCanvas(horseNumber, horseColor) {
+    // Draw the ball onto the off-screen canvas
+    ballCtx.beginPath();
+    ballCtx.arc(ballRadius, ballRadius, ballRadius, 0, Math.PI * 2);
+    ballCtx.fillStyle = horseColor;
+    ballCtx.fill();
+    ballCtx.closePath();
+
+    // Draw the number inside the ball on the off-screen canvas
+    ballCtx.font = "10px Arial";
+    ballCtx.textAlign = "center";
+    ballCtx.textBaseline = "middle";
+    ballCtx.fillStyle = "#FFFFFF";
+    ballCtx.fillText(horseNumber, ballRadius, ballRadius);
+}
+
+// Pre-render the ball
+createBallCanvas("1", "#0095DD");
+
+
 function drawBall() {
-    ctx.beginPath();
-    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "#0095DD";
-    ctx.fill();
-    ctx.closePath();
+    // Draw the pre-rendered ball onto the main canvas
+    ctx.drawImage(ballCanvas, x - ballRadius, y - ballRadius);
 }
 
 function update() {
@@ -31,8 +55,8 @@ function update() {
         dy = -dy;
     }
 
-    x += dx;
-    y += dy;
+    //x += dx;
+    //y += dy;
 }
 
 const options = { mimeType: 'video/mp4;codecs=avc1.424028,mp4a.40.2' };
@@ -45,8 +69,6 @@ function animate() {
     update();
     requestAnimationFrame(animate);
 }
-
-
 
 recordButton.addEventListener('click', () => {
     if (isRecording) {
@@ -67,6 +89,7 @@ recordButton.addEventListener('click', () => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
+            const timestamp = new Date().getTime();
             a.download = `animation_${timestamp}.mp4`;
             a.click();
             URL.revokeObjectURL(url);
