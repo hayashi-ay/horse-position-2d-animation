@@ -1,28 +1,26 @@
 const canvas = document.getElementById('animationCanvas');
-const ctx = canvas.getContext('2d');
+const offscreenCanvas = document.getElementById('offscreenCanvas');
 const recordButton = document.getElementById('recordButton');
+
+const ctx = canvas.getContext('2d');
+const ballCtx = offscreenCanvas.getContext('2d');
 
 let x = canvas.width / 2;
 let y = canvas.height - 30;
 let dx = 2;
 let dy = -2;
-const ballRadius = 10;
+const ballRadius = 12;
 
-let mediaRecorder;
-let recordedChunks = [];
-let isRecording = false;
+// Prepare horses
 
-// Create an off-screen canvas for pre-rendering the ball
-const ballCanvas = document.createElement('canvas');
-const ballCtx = ballCanvas.getContext('2d');
-const ballSize = ballRadius * 2;
-ballCanvas.width = ballSize;
-ballCanvas.height = ballSize;
+function createOffscreenCanvas(horseNumber, horseColor) {
+    const initX = 20;
+    const initY = 20;
+    const ballInnerRadius = 10;
 
-function createBallCanvas(horseNumber, horseColor) {
     // Draw the ball onto the off-screen canvas
     ballCtx.beginPath();
-    ballCtx.arc(ballRadius, ballRadius, ballRadius, 0, Math.PI * 2);
+    ballCtx.arc(initX, initY, ballInnerRadius, 0, Math.PI * 2);
     ballCtx.fillStyle = horseColor;
     ballCtx.fill();
     ballCtx.closePath();
@@ -32,16 +30,23 @@ function createBallCanvas(horseNumber, horseColor) {
     ballCtx.textAlign = "center";
     ballCtx.textBaseline = "middle";
     ballCtx.fillStyle = "#FFFFFF";
-    ballCtx.fillText(horseNumber, ballRadius, ballRadius);
+    ballCtx.fillText(horseNumber, initX, initY);
+
+    // Draw the outer circle
+    ballCtx.beginPath();
+    ballCtx.arc(initX, initY, ballRadius, 0, Math.PI * 2); // Radius 12px
+    ballCtx.strokeStyle = horseColor;
+    ballCtx.lineWidth = 1; // 1px width
+    ballCtx.stroke();
+    ballCtx.closePath();
 }
 
 // Pre-render the ball
-createBallCanvas("1", "#0095DD");
-
+createOffscreenCanvas("1", "#0095DD");
 
 function drawBall() {
     // Draw the pre-rendered ball onto the main canvas
-    ctx.drawImage(ballCanvas, x - ballRadius, y - ballRadius);
+    ctx.drawImage(offscreenCanvas, x - ballRadius, y - ballRadius);
 }
 
 function update() {
@@ -55,11 +60,14 @@ function update() {
         dy = -dy;
     }
 
-    //x += dx;
+    x += dx;
     //y += dy;
 }
 
 const options = { mimeType: 'video/mp4;codecs=avc1.424028,mp4a.40.2' };
+let mediaRecorder;
+let recordedChunks = [];
+let isRecording = false;
 
 function animate() {
     if (!MediaRecorder.isTypeSupported(options.mimeType)) {
