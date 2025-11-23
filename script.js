@@ -34,10 +34,24 @@ function createOffscreenCanvas(horseNumber, horseColor) {
 
     // Draw the outer circle
     ballCtx.beginPath();
-    ballCtx.arc(initX, initY, ballRadius, 0, Math.PI * 2); // Radius 12px
+    ballCtx.arc(initX, initY, ballRadius, 0.15 * Math.PI, 1.85 * Math.PI); // Radius 12px
     ballCtx.strokeStyle = horseColor;
     ballCtx.lineWidth = 1; // 1px width
     ballCtx.stroke();
+    ballCtx.closePath();
+
+    // Draw the small triangle to the right of the ball
+    const triangleBase = 6;
+    const triangleHeight = 8;
+    const triangleX = initX + ballRadius - 1; // Position to the right of the outer circle + a small gap
+    const triangleY = initY;
+
+    ballCtx.beginPath();
+    ballCtx.moveTo(triangleX, triangleY - triangleHeight / 2); // Top point
+    ballCtx.lineTo(triangleX + triangleBase, triangleY); // Right point
+    ballCtx.lineTo(triangleX, triangleY + triangleHeight / 2); // Bottom point
+    ballCtx.fillStyle = horseColor;
+    ballCtx.fill();
     ballCtx.closePath();
 }
 
