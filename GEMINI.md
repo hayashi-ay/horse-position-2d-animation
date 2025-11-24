@@ -42,6 +42,7 @@ The important positions are manually set by analyzing the race movie. The race s
 // The `horsePositions` array is an array of objects, where each object has two properties:
 // - `second`: The time in seconds from the start of the animation when this keyframe occurs.
 // - `positions`: An array of 8 objects, each representing a horse's position.
+- **Horse Ranking Comments**: The comments above each `positions` array indicate the ranking of horses at that specific `second` in the animation. This ranking should be respected and not violated by subsequent changes to the position data.
 //
 // HORSE ORDER:
 // 1. white, 2. black, 3. red, 4. blue, 5. yellow, 6. green, 7. orange, 8. pink
