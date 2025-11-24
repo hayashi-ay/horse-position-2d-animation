@@ -154,14 +154,22 @@ function animate() {
     if (currentFrame >= totalAnimationFrames) {
         currentFrame = totalAnimationFrames;
     }
-    requestAnimationFrame(animate);
+    if (isRecording) {
+        requestAnimationFrame(animate);
+    }
 }
 
 recordButton.addEventListener('click', () => {
     if (isRecording) {
+        // Stop recording
+        isRecording = false;
         mediaRecorder.stop();
         recordButton.textContent = 'Start Recording';
     } else {
+        // Start recording
+        isRecording = true;
+        currentFrame = 0;
+        
         const stream = canvas.captureStream();
         mediaRecorder = new MediaRecorder(stream, options);
 
@@ -185,8 +193,6 @@ recordButton.addEventListener('click', () => {
 
         mediaRecorder.start();
         recordButton.textContent = 'Stop Recording';
+        animate();
     }
-    isRecording = !isRecording;
 });
-
-animate();
