@@ -3,7 +3,7 @@ const recordButton = document.getElementById('recordButton');
 
 const ctx = canvas.getContext('2d');
 const ballRadius = 12;
-const FPS = 60; // Frames per second
+const FPS = 60;
 
 let currentFrame = 0;
 const totalAnimationFrames = (keyFrames.length - 1) * FPS;
@@ -98,7 +98,9 @@ function animate() {
 
     const currentSecond = Math.floor(currentFrame / FPS);
     const nextSecond = currentSecond + 1;
-    
+
+    let interpolatedPositions = [];
+
     if (nextSecond < keyFrames.length) {
         const fromKeyFrame = keyFrames[currentSecond];
         const toKeyFrame = keyFrames[nextSecond];
@@ -110,22 +112,30 @@ function animate() {
 
             const interpolatedX = fromPos.x + (toPos.x - fromPos.x) / FPS * frameInSecond;
             const interpolatedY = fromPos.y + (toPos.y - fromPos.y) / FPS * frameInSecond;
-
-            horses[i].x = interpolatedX;
-            horses[i].y = interpolatedY;
-            horses[i].draw();
+            interpolatedPositions.push({ x: interpolatedX, y: interpolatedY });
         }
     } else {
-        // Draw the last frame if the animation is over
         const lastKeyFrame = keyFrames[keyFrames.length - 1];
         for (let i = 0; i < horses.length; i++) {
-            horses[i].x = lastKeyFrame[i].x;
-            horses[i].y = lastKeyFrame[i].y;
-            horses[i].draw();
+            interpolatedPositions.push({ x: lastKeyFrame[i].x, y: lastKeyFrame[i].y });
         }
     }
+
+    const topX = Math.max(...interpolatedPositions.map(p => p.x));
+    const topHorseRightMargin = 50;
+    const scale = canvas.width / 400;
+
+    for (let i = 0; i < horses.length; i++) {
+        const pos = interpolatedPositions[i];
+        horses[i].x = canvas.width - topHorseRightMargin - (topX - pos.x) * scale;
+        horses[i].y = pos.y;
+        horses[i].draw();
+    }
     
-    currentFrame = (currentFrame + 1) % totalAnimationFrames;
+    currentFrame = (currentFrame + 1);
+    if (currentFrame >= totalAnimationFrames) {
+        currentFrame = totalAnimationFrames;
+    }
     requestAnimationFrame(animate);
 }
 
