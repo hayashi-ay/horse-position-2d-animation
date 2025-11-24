@@ -32,13 +32,13 @@
 // White, Black, Red, Blue
 // Yellow, Green, Orange, Pink
 const horsePositions = [
-    // At 1:39, which is Second 0 of our animation.
+    // At 1:39
     {
         second: 0,
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
         positions: [
-            { x: -1, y: 10 }, { x: -6, y: 5 }, { x: -4, y: 25 }, { x: -2, y: 20 },
-            { x: -7, y: 20 }, { x: -9, y: 20 }, { x: -4, y: 30 }, { x: 0, y: 30 }
+            { x: -1, y: 10 }, { x: -5.0, y: 15 }, { x: -4, y: 25 }, { x: -3, y: 20 },
+            { x: -6, y: 25 }, { x: -7, y: 40 }, { x: -4.5, y: 45 }, { x: 0, y: 40 }
         ]
     },
     // Estimated Data at 1:49: The gap is growing
@@ -46,17 +46,25 @@ const horsePositions = [
         second: 10,
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
         positions: [
-            { x: -2, y: 20 }, { x: -7, y: 5 }, { x: -5, y: 10 }, { x: -3, y: 5 },
-            { x: -8, y: 15 }, { x: -10, y: 20 }, { x: -7, y: 30 }, { x: 0, y: 10 }
+            { x: -1, y: 10 }, { x: -6.5, y: 10 }, { x: -4.5, y: 25 }, { x: -3, y: 20 },
+            { x: -7, y: 20 }, { x: -10, y: 25 }, { x: -5, y: 40 }, { x: 0, y: 30 }
         ]
     },
-    // Estimated Data at 2:03: black catch up orange
     {
-        second: 24,
-        // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE, 7: YELLOW, 8: GREEN
+        second: 10,
+        // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
         positions: [
-            { x: -1, y: 20 }, { x: -7, y: 5 }, { x: -4, y: 8 }, { x: -2, y: 5 },
-            { x: -11, y: 30 }, { x: -12, y: 40 }, { x: -7, y: 40 }, { x: 0, y: 5 }
+            { x: -1, y: 10 }, { x: -6.5, y: 10 }, { x: -4.5, y: 25 }, { x: -3, y: 20 },
+            { x: -7, y: 20 }, { x: -10, y: 25 }, { x: -5, y: 40 }, { x: 0, y: 30 }
+        ]
+    },
+    // At 1:55, all horses' positions can be confirmed
+    {
+        second: 16,
+        // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
+        positions: [
+            { x: -1.5, y: 15 }, { x: -6.5, y: 15 }, { x: -5, y: 20 }, { x: -2, y: 25 },
+            { x: -7.5, y: 20 }, { x: -10.5, y: 20 }, { x: -5.8, y: 45 }, { x: 0, y: 15 }
         ]
     },
     // At 2:12, it's confirmed that black passes orange.
