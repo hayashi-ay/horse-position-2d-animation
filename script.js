@@ -138,7 +138,7 @@ function animate() {
 
     for (let i = 0; i < horses.length; i++) {
         const pos = interpolatedPositions[i];
-        horses[i].x = canvas.width - topHorseRightMargin - (topX - pos.x) * scale;
+        horses[i].x = canvas.width - topHorseRightMargin - (topX - pos.x) * scale * ballRadius;
         horses[i].y = pos.y;
         horses[i].draw();
     }
