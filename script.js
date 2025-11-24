@@ -1,5 +1,6 @@
 const canvas = document.getElementById('animationCanvas');
 const recordButton = document.getElementById('recordButton');
+const debugTime = document.getElementById('debugTime');
 
 const ctx = canvas.getContext('2d');
 const ballRadius = 12;
@@ -98,6 +99,12 @@ function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const currentTimeInSeconds = currentFrame / FPS;
+
+    const startSeconds = (1 * 60) + 39;
+    const totalSeconds = Math.floor(startSeconds + currentTimeInSeconds);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    debugTime.innerText = `Time: ${minutes}:${seconds.toString().padStart(2, '0')}`;
 
     let fromKeyFrame, toKeyFrame;
     for (let i = 0; i < horsePositions.length - 1; i++) {
