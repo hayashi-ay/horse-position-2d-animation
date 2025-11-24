@@ -36,8 +36,7 @@ This approach allows the animation to dynamically adjust its view, always keepin
 ## Keyframe Data (`horsePositions.js`)
 
 ```javascript
-// This file defines the key moments of a horse race.
-// Each entry in the `horsePositions` array is a keyframe, representing the state of the race at a specific time.
+The important positions are manually set by analyzing the race movie. The race starts at 1:20 and the top horse crosses the finish line at 2:56. The animation, however, focuses on the segment from 1:39 to 2:49. Each entry in the `horsePositions` array is a keyframe, representing the state of the race at a specific time.
 //
 // DATA STRUCTURE:
 // The `horsePositions` array is an array of objects, where each object has two properties:
