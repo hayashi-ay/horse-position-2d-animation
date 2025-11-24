@@ -1,11 +1,11 @@
 // Each entry in this array represents the horse positions at a specific second.
 // The animation will be interpolated between these keyframes.
 const horsePositions = [
-    // white, black, read, blue
+    // white, black, red, blue
     // yellow, green, orange, pink
     // Second 0, 1:39
     [
-        // 1: PINK, 2: WHITE, 3: BLUE
+        // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
         { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
         { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
     ],
