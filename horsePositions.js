@@ -28,32 +28,53 @@
 // to reflect the actual progress of the race at that specific second.
 // The user's notes on horse rankings are for reference to help fill in this data.
 
+// 1馬身が12
+// White, Black, Red, Blue
+// Yellow, Green, Orange, Pink
 const horsePositions = [
-    // Race Start: 1:39 in the video, which is Second 0 of our animation.
+    // At 1:39, which is Second 0 of our animation.
     {
         second: 0,
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
         positions: [
-            { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
+            { x: -10, y: 10 }, { x: -70, y: 5 }, { x: -40, y: 25 }, { x: -24, y: 20 },
+            { x: -75, y: 20 }, { x: -100, y: 20 }, { x: -45, y: 30 }, { x: 0, y: 30 }
         ]
     },
-    // At 2:12 in the video (33 seconds into animation), black passes orange.
+    // Estimated Data at 1:49: The gap is growing
+    {
+        second: 10,
+        // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
+        positions: [
+            { x: -20, y: 20 }, { x: -80, y: 5 }, { x: -60, y: 10 }, { x: -25, y: 5 },
+            { x: -90, y: 15 }, { x: -120, y: 20 }, { x: -75, y: 30 }, { x: 0, y: 10 }
+        ]
+    },
+    // Estimated Data at 2:03: black catch up orange
+    {
+        second: 24,
+        // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE, 7: YELLOW, 8: GREEN
+        positions: [
+            { x: -12, y: 20 }, { x: -80, y: 5 }, { x: -48, y: 8 }, { x: -24, y: 5 },
+            { x: -130, y: 30 }, { x: -140, y: 40 }, { x: -80, y: 40 }, { x: 0, y: 5 }
+        ]
+    },
+    // At 2:12, it's confirmed that black passes orange.
     {
         second: 33,
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
         positions: [
-            { x: 300, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
+            { x: -12, y: 20 }, { x: -80, y: 5 }, { x: -48, y: 8 }, { x: -24, y: 5 },
+            { x: -130, y: 30 }, { x: -140, y: 40 }, { x: -110, y: 40 }, { x: 0, y: 5 }
         ]
     },
-    // At 2:23 in the video (44 seconds into animation), blue and white are competing.
+    // At 2:23, blue and white are competing.
     {
         second: 44,
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
         positions: [
-            { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
+            { x: -14, y: 22 }, { x: -60, y: 25 }, { x: -48, y: 10 }, { x: -12, y: 5 },
+            { x: -120, y: 30 }, { x: -140, y: 25 }, { x: -110, y: 40 }, { x: 0, y: 10 }
         ]
     },
     // At 2:24 in the video (45 seconds into animation), blue passes white.
@@ -61,17 +82,17 @@ const horsePositions = [
         second: 45,
         // 1: PINK, 2: BLUE, 3: WHITE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
         positions: [
-            { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
+            { x: -20, y: 22 }, { x: -60, y: 25 }, { x: -48, y: 10 }, { x: -6, y: 5 },
+            { x: -120, y: 30 }, { x: -140, y: 25 }, { x: -110, y: 40 }, { x: 0, y: 10 }
         ]
     },
-    // At 2:38 in the video (59 seconds into animation), yellow passes orange.
+    // At 2:38, is's confirmed that yellow passes orange.
     {
         second: 59,
         // 1: PINK, 2: BLUE, 3: WHITE, 4: RED, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
         positions: [
-            { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
+            { x: -30, y: 25 }, { x: -40, y: 40 }, { x: -30, y: 15 }, { x: -4, y: 25 },
+            { x: -70, y: 30 }, { x: -100, y: 22 }, { x: -80, y: 20 }, { x: 0, y: 15 }
         ]
     },
     // At 2:44 in the video (65 seconds into animation), blue catches up to pink.
@@ -79,8 +100,8 @@ const horsePositions = [
         second: 65,
         // 1: PINK, 2: BLUE, 3: RED, 4: WHITE, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
         positions: [
-            { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
+            { x: -30, y: 25 }, { x: -40, y: 40 }, { x: -30, y: 15 }, { x: 0, y: 23 },
+            { x: -70, y: 30 }, { x: -100, y: 22 }, { x: -80, y: 20 }, { x: 0, y: 13 }
         ]
     },
     // At 2:45 in the video (66 seconds into animation), blue passes pink.
@@ -88,8 +109,8 @@ const horsePositions = [
         second: 66,
         // 1: BLUE, 2: PINK, 3: RED, 4: WHITE, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
         positions: [
-            { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
+            { x: -30, y: 25 }, { x: -40, y: 40 }, { x: -30, y: 15 }, { x: 0, y: 23 },
+            { x: -70, y: 30 }, { x: -100, y: 22 }, { x: -80, y: 20 }, { x: -5, y: 13 }
         ]
     },
     // At 2:47 in the video (68 seconds into animation), black passes white.
@@ -97,8 +118,8 @@ const horsePositions = [
         second: 68,
         // 1: BLUE, 2: PINK, 3: RED, 4: BLACK, 5: WHITE, 6: YELLOW 7: ORANGE, 8: GREEN
         positions: [
-            { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
+            { x: -30, y: 25 }, { x: -40, y: 40 }, { x: -30, y: 15 }, { x: 0, y: 23 },
+            { x: -70, y: 30 }, { x: -100, y: 22 }, { x: -80, y: 20 }, { x: -5, y: 13 }
         ]
     },
     // At 2:49 in the video (70 seconds into animation).
@@ -106,8 +127,8 @@ const horsePositions = [
         second: 70,
         // 1: BLUE, 2: PINK, 3: RED, 4: BLACK, 5: WHITE, 6: YELLOW 7: ORANGE, 8: GREEN
         positions: [
-            { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
+            { x: -30, y: 25 }, { x: -40, y: 40 }, { x: -30, y: 15 }, { x: 0, y: 23 },
+            { x: -70, y: 30 }, { x: -100, y: 22 }, { x: -80, y: 20 }, { x: -5, y: 13 }
         ]
     }
 ];
