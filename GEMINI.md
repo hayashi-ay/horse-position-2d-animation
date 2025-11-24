@@ -17,7 +17,7 @@ This project exclusively uses **HTML, CSS, and vanilla JavaScript**. It avoids m
 
 The animation simulates a 1500-meter horse race. The `horsePositions.js` file stores keyframes in an array of objects. Each object contains the `second` of the keyframe and an array of `positions` for each horse.
 
--   **`x` position (meters):** Represents the horse's horizontal progress in the race, ranging from 0 (start) to 1500 (finish line).
+-   **`x` position (horse lengths from lead):** Represents the horse's distance in horse lengths behind the current lead horse. A value of 0 indicates the horse is the lead horse. Negative values indicate the horse is ahead of the previous theoretical lead.
 -   **`y` position (pixels):** Represents the horse's vertical position on the canvas. These values are pixel coordinates and are interpolated between keyframes.
 
 The `script.js` file orchestrates the animation:
