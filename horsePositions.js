@@ -3,60 +3,67 @@
 const horsePositions = [
     // white, black, red, blue
     // yellow, green, orange, pink
+    // Race Start: 1:20 but the animation's first frame is the point of 1:39
     // Second 0, 1:39
     [
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
         { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
         { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
     ],
-    // Second 1
+    // Second 33, 2:12
+    // At this point, it can be confirmed that the black pass the orange, so between 1:39 and 2:12, black passes orange
     [
-        { x: 150, y: 10 }, { x: 130, y: 25 }, { x: 150, y: 30 }, { x: 110, y: 50 },
-        { x: 135, y: 60 }, { x: 145, y: 10 }, { x: 175, y: 10 }, { x: 165, y: 20 }
+        // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
+        { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
+        { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }      
     ],
-    // Second 2
+    // Second 44, 2:23
+    // At this point, blue and white is competing.
     [
-        { x: 250, y: 10 }, { x: 235, y: 25 }, { x: 220, y: 30 }, { x: 220, y: 50 },
-        { x: 240, y: 60 }, { x: 250, y: 10 }, { x: 280, y: 10 }, { x: 270, y: 20 }
+        // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
+        { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
+        { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }      
     ],
-    // Second 3
+    // Second 45, 2:24
+    // At this point, blue passes white
     [
-        { x: 400, y: 10 }, { x: 380, y: 25 }, { x: 410, y: 30 }, { x: 350, y: 50 },
-        { x: 385, y: 60 }, { x: 395, y: 10 }, { x: 425, y: 10 }, { x: 415, y: 20 }
+        // 1: PINK, 2: BLUE, 3: WHITE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
+        { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
+        { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }      
     ],
-    // Second 4
+    // Second 59, 2:38
+    // At this point, it's confirmed that yellow pass orange.
     [
-        { x: 550, y: 10 }, { x: 530, y: 25 }, { x: 560, y: 30 }, { x: 500, y: 50 },
-        { x: 535, y: 60 }, { x: 545, y: 10 }, { x: 575, y: 10 }, { x: 565, y: 20 }
+        // 1: PINK, 2: BLUE, 3: WHITE, 4: RED, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
+        { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
+        { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }      
     ],
-    // Second 5
+    // Second 59, 2:44
+    // At this point, blue catches up pink
     [
-        { x: 700, y: 10 }, { x: 680, y: 25 }, { x: 710, y: 30 }, { x: 650, y: 50 },
-        { x: 685, y: 60 }, { x: 695, y: 10 }, { x: 725, y: 10 }, { x: 715, y: 20 }
+        // 1: PINK, 2: BLUE, 3: RED, 4: WHITE, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
+        { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
+        { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }      
     ],
-    // Second 6
+    // Second 60, 2:45
+    // At this point, blue passes pink
     [
-        { x: 850, y: 10 }, { x: 830, y: 25 }, { x: 860, y: 30 }, { x: 800, y: 50 },
-        { x: 835, y: 60 }, { x: 845, y: 10 }, { x: 875, y: 10 }, { x: 865, y: 20 }
+        // 1: BLUE, 2: PINK, 3: RED, 4: WHITE, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
+        { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
+        { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }      
     ],
-    // Second 7
+    // Second 62, 2:47
+    // At this point, black passes white
     [
-        { x: 1000, y: 10 }, { x: 980, y: 25 }, { x: 1010, y: 30 }, { x: 950, y: 50 },
-        { x: 985, y: 60 }, { x: 995, y: 10 }, { x: 1025, y: 10 }, { x: 1015, y: 20 }
+        // 1: BLUE, 2: PINK, 3: RED, 4: BLACK, 5: WHITE, 6: YELLOW 7: ORANGE, 8: GREEN
+        { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
+        { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }      
     ],
-    // Second 8
+    // Second 64, 2:49
+    // At the end of animation though the top horse goals at 2:56
     [
-        { x: 1150, y: 10 }, { x: 1130, y: 25 }, { x: 1160, y: 30 }, { x: 1100, y: 50 },
-        { x: 1135, y: 60 }, { x: 1145, y: 10 }, { x: 1175, y: 10 }, { x: 1165, y: 20 }
-    ],
-    // Second 9
-    [
-        { x: 1300, y: 10 }, { x: 1280, y: 25 }, { x: 1310, y: 30 }, { x: 1250, y: 50 },
-        { x: 1285, y: 60 }, { x: 1295, y: 10 }, { x: 1325, y: 10 }, { x: 1315, y: 20 }
-    ],
-    // Second 10, Goal
-    [
-        { x: 1500, y: 10 }, { x: 1480, y: 25 }, { x: 1450, y: 30 }, { x: 1400, y: 50 },
-        { x: 1490, y: 60 }, { x: 1490, y: 10 }, { x: 1425, y: 10 }, { x: 1445, y: 20 }
+        // 1: BLUE, 2: PINK, 3: RED, 4: BLACK, 5: WHITE, 6: YELLOW 7: ORANGE, 8: GREEN
+        { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
+        { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }      
     ]
 ];
