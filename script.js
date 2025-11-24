@@ -132,7 +132,7 @@ function animate() {
         }
     }
 
-    const topX = Math.max(...interpolatedPositions.map(p => p.x));
+    const topX = 0;
     const topHorseRightMargin = 50;
     const scale = canvas.width / 400;
 
