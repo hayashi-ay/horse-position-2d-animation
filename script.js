@@ -6,7 +6,8 @@ const ballRadius = 12;
 const FPS = 60;
 
 let currentFrame = 0;
-const totalAnimationFrames = (horsePositions.length - 1) * FPS;
+const totalAnimationDurationInSeconds = horsePositions[horsePositions.length - 1].second;
+const totalAnimationFrames = totalAnimationDurationInSeconds * FPS;
 
 class Horse {
     constructor(number, color, textColor, initX, initY) {
@@ -80,7 +81,7 @@ const horseProperties = [
 ];
 
 const horses = horseProperties.map((prop, i) =>
-    new Horse(prop.number, prop.color, prop.textColor, horsePositions[0][i].x, horsePositions[0][i].y)
+    new Horse(prop.number, prop.color, prop.textColor, horsePositions[0].positions[i].x, horsePositions[0].positions[i].y)
 );
 
 const options = { mimeType: 'video/mp4;codecs=avc1.424028,mp4a.40.2' };
@@ -96,28 +97,38 @@ function animate() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const currentSecond = Math.floor(currentFrame / FPS);
-    const nextSecond = currentSecond + 1;
+    const currentTimeInSeconds = currentFrame / FPS;
+
+    let fromKeyFrame, toKeyFrame;
+    for (let i = 0; i < horsePositions.length - 1; i++) {
+        if (currentTimeInSeconds >= horsePositions[i].second && currentTimeInSeconds < horsePositions[i+1].second) {
+            fromKeyFrame = horsePositions[i];
+            toKeyFrame = horsePositions[i+1];
+            break;
+        }
+    }
 
     let interpolatedPositions = [];
 
-    if (nextSecond < horsePositions.length) {
-        const fromKeyFrame = horsePositions[currentSecond];
-        const toKeyFrame = horsePositions[nextSecond];
-        const frameInSecond = currentFrame % FPS;
+    if (fromKeyFrame && toKeyFrame) {
+        const timeInSegment = currentTimeInSeconds - fromKeyFrame.second;
+        const segmentDuration = toKeyFrame.second - fromKeyFrame.second;
+        const segmentProgress = timeInSegment / segmentDuration;
 
         for (let i = 0; i < horses.length; i++) {
-            const fromPos = fromKeyFrame[i];
-            const toPos = toKeyFrame[i];
+            const fromPos = fromKeyFrame.positions[i];
+            const toPos = toKeyFrame.positions[i];
 
-            const interpolatedX = fromPos.x + (toPos.x - fromPos.x) / FPS * frameInSecond;
-            const interpolatedY = fromPos.y + (toPos.y - fromPos.y) / FPS * frameInSecond;
+            const interpolatedX = fromPos.x + (toPos.x - fromPos.x) * segmentProgress;
+            const interpolatedY = fromPos.y + (toPos.y - fromPos.y) * segmentProgress;
+
             interpolatedPositions.push({ x: interpolatedX, y: interpolatedY });
         }
     } else {
+        // before first keyframe or after last keyframe, draw the last frame
         const lastKeyFrame = horsePositions[horsePositions.length - 1];
         for (let i = 0; i < horses.length; i++) {
-            interpolatedPositions.push({ x: lastKeyFrame[i].x, y: lastKeyFrame[i].y });
+            interpolatedPositions.push({ x: lastKeyFrame.positions[i].x, y: lastKeyFrame.positions[i].y });
         }
     }
 
