@@ -3,9 +3,10 @@ const recordButton = document.getElementById('recordButton');
 
 const ctx = canvas.getContext('2d');
 const ballRadius = 12;
+const FPS = 60; // Frames per second
 
 let currentFrame = 0;
-const frameCount = frames.length;
+const totalAnimationFrames = (keyFrames.length - 1) * FPS;
 
 class Horse {
     constructor(number, color, textColor, initX, initY) {
@@ -79,7 +80,7 @@ const horseProperties = [
 ];
 
 const horses = horseProperties.map((prop, i) =>
-    new Horse(prop.number, prop.color, prop.textColor, frames[0][i].x, frames[0][i].y)
+    new Horse(prop.number, prop.color, prop.textColor, keyFrames[0][i].x, keyFrames[0][i].y)
 );
 
 const options = { mimeType: 'video/mp4;codecs=avc1.424028,mp4a.40.2' };
@@ -94,15 +95,37 @@ function animate() {
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const framePositions = frames[currentFrame];
 
-    for (let i = 0; i < horses.length; i++) {
-        horses[i].x = framePositions[i].x;
-        horses[i].y = framePositions[i].y;
-        horses[i].draw();
+    const currentSecond = Math.floor(currentFrame / FPS);
+    const nextSecond = currentSecond + 1;
+    
+    if (nextSecond < keyFrames.length) {
+        const fromKeyFrame = keyFrames[currentSecond];
+        const toKeyFrame = keyFrames[nextSecond];
+        const frameInSecond = currentFrame % FPS;
+
+        for (let i = 0; i < horses.length; i++) {
+            const fromPos = fromKeyFrame[i];
+            const toPos = toKeyFrame[i];
+
+            const interpolatedX = fromPos.x + (toPos.x - fromPos.x) / FPS * frameInSecond;
+            const interpolatedY = fromPos.y + (toPos.y - fromPos.y) / FPS * frameInSecond;
+
+            horses[i].x = interpolatedX;
+            horses[i].y = interpolatedY;
+            horses[i].draw();
+        }
+    } else {
+        // Draw the last frame if the animation is over
+        const lastKeyFrame = keyFrames[keyFrames.length - 1];
+        for (let i = 0; i < horses.length; i++) {
+            horses[i].x = lastKeyFrame[i].x;
+            horses[i].y = lastKeyFrame[i].y;
+            horses[i].draw();
+        }
     }
-
-    currentFrame = (currentFrame + 1) % frameCount;
+    
+    currentFrame = (currentFrame + 1) % totalAnimationFrames;
     requestAnimationFrame(animate);
 }
 
