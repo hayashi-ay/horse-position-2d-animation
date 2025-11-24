@@ -6,7 +6,7 @@ const ballRadius = 12;
 const FPS = 60;
 
 let currentFrame = 0;
-const totalAnimationFrames = (keyFrames.length - 1) * FPS;
+const totalAnimationFrames = (horsePositions.length - 1) * FPS;
 
 class Horse {
     constructor(number, color, textColor, initX, initY) {
@@ -80,7 +80,7 @@ const horseProperties = [
 ];
 
 const horses = horseProperties.map((prop, i) =>
-    new Horse(prop.number, prop.color, prop.textColor, keyFrames[0][i].x, keyFrames[0][i].y)
+    new Horse(prop.number, prop.color, prop.textColor, horsePositions[0][i].x, horsePositions[0][i].y)
 );
 
 const options = { mimeType: 'video/mp4;codecs=avc1.424028,mp4a.40.2' };
@@ -101,9 +101,9 @@ function animate() {
 
     let interpolatedPositions = [];
 
-    if (nextSecond < keyFrames.length) {
-        const fromKeyFrame = keyFrames[currentSecond];
-        const toKeyFrame = keyFrames[nextSecond];
+    if (nextSecond < horsePositions.length) {
+        const fromKeyFrame = horsePositions[currentSecond];
+        const toKeyFrame = horsePositions[nextSecond];
         const frameInSecond = currentFrame % FPS;
 
         for (let i = 0; i < horses.length; i++) {
@@ -115,7 +115,7 @@ function animate() {
             interpolatedPositions.push({ x: interpolatedX, y: interpolatedY });
         }
     } else {
-        const lastKeyFrame = keyFrames[keyFrames.length - 1];
+        const lastKeyFrame = horsePositions[horsePositions.length - 1];
         for (let i = 0; i < horses.length; i++) {
             interpolatedPositions.push({ x: lastKeyFrame[i].x, y: lastKeyFrame[i].y });
         }

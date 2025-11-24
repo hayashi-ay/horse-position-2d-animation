@@ -1,6 +1,6 @@
 // Each entry in this array represents the horse positions at a specific second.
 // The animation will be interpolated between these keyframes.
-const keyFrames = [
+const horsePositions = [
     // Second 0
     [
         { x: 0, y: 10 }, { x: 0, y: 25 }, { x: 0, y: 30 }, { x: 0, y: 50 },

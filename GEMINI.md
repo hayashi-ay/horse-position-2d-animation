@@ -7,7 +7,7 @@ This project generates 2D animations of horse positions during a race using HTML
 - `index.html`: The main HTML file that sets up the canvas and includes the stylesheet and JavaScript.
 - `style.css`: Provides basic styling for the HTML elements.
 - `script.js`: Contains the core logic for drawing the horse animation on the canvas and utilizing the MediaRecorder API to capture the animation.
-- `horsePositions.js`: Defines the `keyFrames` array. Each element in the array represents the positions of all horses at a specific second of the animation. The frames between these keyframes are then calculated by `script.js` to create a smooth animation.
+- `horsePositions.js`: Defines the `horsePositions` array. Each element in the array represents the positions of all horses at a specific second of the animation. The frames between these positions are then calculated by `script.js` to create a smooth animation.
 
 ## Technology Stack
 
@@ -18,11 +18,11 @@ This project exclusively uses **HTML, CSS, and vanilla JavaScript**. It avoids m
 The animation simulates a 1500-meter horse race. The `horsePositions.js` file stores the absolute positions of each horse (in meters) at specific one-second intervals.
 
 -   **`x` position (meters):** Represents the horse's horizontal progress in the race, ranging from 0 (start) to 1500 (finish line).
--   **`y` position (pixels):** Represents the horse's vertical position on the canvas. These values are pixel coordinates and are interpolated between keyframes, allowing horses to change their vertical alignment (e.g., to represent different lanes or jostling for position).
+-   **`y` position (pixels):** Represents the horse's vertical position on the canvas. These values are pixel coordinates and are interpolated between `horsePositions`, allowing horses to change their vertical alignment (e.g., to represent different lanes or jostling for position).
 
 The `script.js` file orchestrates the animation:
 
-1.  **Interpolation:** Between the defined keyframes, the horse's `x` and `y` positions are linearly interpolated to create smooth movement at 30 frames per second (FPS).
+1.  **Interpolation:** Between the defined `horsePositions`, the horse's `x` and `y` positions are linearly interpolated to create smooth movement at 30 frames per second (FPS).
 2.  **Relative Positioning:** To focus on the race leaders, the animation displays horses relative to the horse currently furthest ahead (the "top horse").
     *   The `x` position of the top horse is found for the current interpolated frame.
     *   A `scale` factor (`canvas.width / 400`) is applied, meaning a 400-meter span of the race is visually represented across the entire canvas width. This effectively "zooms in" on the leading horses.
@@ -37,7 +37,7 @@ This approach allows the animation to dynamically adjust its view, always keepin
 ```javascript
 // Each entry in this array represents the horse positions at a specific second.
 // The animation will be interpolated between these keyframes.
-const keyFrames = [
+const horsePositions = [
     // Second 0
     [
         { x: 0, y: 10 }, { x: 0, y: 25 }, { x: 0, y: 30 }, { x: 0, y: 50 },
