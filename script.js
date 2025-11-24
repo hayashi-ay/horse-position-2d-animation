@@ -4,6 +4,9 @@ const recordButton = document.getElementById('recordButton');
 const ctx = canvas.getContext('2d');
 const ballRadius = 12;
 
+let currentFrame = 0;
+const frameCount = frames.length;
+
 class Horse {
     constructor(number, color, textColor, initX, initY) {
         this.number = number;
@@ -11,9 +14,6 @@ class Horse {
         this.textColor = textColor;
         this.x = initX;
         this.y = initY;
-
-        this.dx = 2;
-        this.dy = -2;
         this.canvas = this.createOffscreenCanvas();
     }
 
@@ -39,22 +39,22 @@ class Horse {
 
         // Draw the outer circle
         horseCtx.beginPath();
-        horseCtx.arc(ballSize, ballSize, ballRadius, 0.15 * Math.PI, 1.85 * Math.PI); // Radius 12px
+        horseCtx.arc(ballSize, ballSize, ballRadius, 0.15 * Math.PI, 1.85 * Math.PI);
         horseCtx.strokeStyle = this.color;
-        horseCtx.lineWidth = 1; // 1px width
+        horseCtx.lineWidth = 1;
         horseCtx.stroke();
         horseCtx.closePath();
 
         // Draw the small triangle to the right of the ball
         const triangleBase = 6;
         const triangleHeight = 8;
-        const triangleX = ballSize + ballRadius - 1; // Position to the right of the outer circle + a small gap
+        const triangleX = ballSize + ballRadius - 1;
         const triangleY = ballSize;
 
         horseCtx.beginPath();
-        horseCtx.moveTo(triangleX, triangleY - triangleHeight / 2); // Top point
-        horseCtx.lineTo(triangleX + triangleBase, triangleY); // Right point
-        horseCtx.lineTo(triangleX, triangleY + triangleHeight / 2); // Bottom point
+        horseCtx.moveTo(triangleX, triangleY - triangleHeight / 2);
+        horseCtx.lineTo(triangleX + triangleBase, triangleY);
+        horseCtx.lineTo(triangleX, triangleY + triangleHeight / 2);
         horseCtx.fillStyle = this.color;
         horseCtx.fill();
         horseCtx.closePath();
@@ -65,38 +65,22 @@ class Horse {
     draw() {
         ctx.drawImage(this.canvas, this.x - ballRadius, this.y - ballRadius);
     }
-
-    update() {
-        if (this.x + this.dx > canvas.width - ballRadius || this.x + this.dx < ballRadius) {
-            this.dx = -this.dx;
-        }
-        if (this.y + this.dy > canvas.height - ballRadius || this.y + this.dy < ballRadius) {
-            this.dy = -this.dy;
-        }
-
-        this.x += this.dx;
-        //this.y += this.dy;
-    }
 }
 
-const horses = [
-    new Horse("1", "white", "black", 10, 10),
-    new Horse("2", "black", "white", 25, 25),
-    new Horse("3", "red", "white", 10, 30),
-    new Horse("4", "blue", "white", 10, 50),
-    new Horse("5", "yellow", "black", 30, 60),
-    new Horse("6", "green", "white", 40, 10),
-    new Horse("7", "orange", "white", 70, 10),
-    new Horse("8", "pink", "white", 60, 20),
+const horseProperties = [
+    { number: "1", color: "white", textColor: "black" },
+    { number: "2", color: "black", textColor: "white" },
+    { number: "3", color: "red", textColor: "white" },
+    { number: "4", color: "blue", textColor: "white" },
+    { number: "5", color: "yellow", textColor: "black" },
+    { number: "6", color: "green", textColor: "white" },
+    { number: "7", color: "orange", textColor: "white" },
+    { number: "8", color: "pink", textColor: "white" },
 ];
 
-function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (const horse of horses) {
-        horse.update();
-        horse.draw();
-    }
-}
+const horses = horseProperties.map((prop, i) =>
+    new Horse(prop.number, prop.color, prop.textColor, frames[0][i].x, frames[0][i].y)
+);
 
 const options = { mimeType: 'video/mp4;codecs=avc1.424028,mp4a.40.2' };
 let mediaRecorder;
@@ -108,7 +92,17 @@ function animate() {
         console.log("Not Supported");
         return;
     }
-    update();
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const framePositions = frames[currentFrame];
+
+    for (let i = 0; i < horses.length; i++) {
+        horses[i].x = framePositions[i].x;
+        horses[i].y = framePositions[i].y;
+        horses[i].draw();
+    }
+
+    currentFrame = (currentFrame + 1) % frameCount;
     requestAnimationFrame(animate);
 }
 
