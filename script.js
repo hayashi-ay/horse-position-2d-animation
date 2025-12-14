@@ -169,7 +169,7 @@ recordButton.addEventListener('click', () => {
         isRecording = true;
         currentFrame = 0;
         
-        const stream = canvas.captureStream();
+        const stream = canvas.captureStream(FPS);
         mediaRecorder = new MediaRecorder(stream, options);
 
         mediaRecorder.ondataavailable = (event) => {
