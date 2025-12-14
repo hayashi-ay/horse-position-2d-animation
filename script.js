@@ -85,7 +85,7 @@ const horses = horseProperties.map((prop, i) =>
     new Horse(prop.number, prop.color, prop.textColor, horsePositions[0].positions[i].x, horsePositions[0].positions[i].y)
 );
 
-const options = { mimeType: 'video/mp4;codecs=avc1.424028,mp4a.40.2' };
+const options = { mimeType: 'video/webm; codecs=vp9' };
 let mediaRecorder;
 let recordedChunks = [];
 let isRecording = false;
@@ -96,9 +96,11 @@ function animate() {
         return;
     }
 
-    // 背景色でリセットする、背景色を設定しない（clearRect）だとmp4にした際に自動で背景色が足されて描画が潰れてしまう
-    ctx.fillStyle = 'grey';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+        console.error("VP9 codec is not supported on this browser.");
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     const currentTimeInSeconds = currentFrame / FPS;
 
@@ -186,7 +188,7 @@ recordButton.addEventListener('click', () => {
             const a = document.createElement('a');
             a.href = url;
             const timestamp = new Date().getTime();
-            a.download = `animation_${timestamp}.mp4`;
+            a.download = `animation_${timestamp}.webm`;
             a.click();
             URL.revokeObjectURL(url);
             recordedChunks = [];
