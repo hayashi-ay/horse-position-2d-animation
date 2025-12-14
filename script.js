@@ -96,7 +96,9 @@ function animate() {
         return;
     }
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // 背景色でリセットする、背景色を設定しない（clearRect）だとmp4にした際に自動で背景色が足されて描画が潰れてしまう
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const currentTimeInSeconds = currentFrame / FPS;
 
