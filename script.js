@@ -17,14 +17,32 @@ class Horse {
         this.textColor = textColor;
         this.x = initX;
         this.y = initY;
-        this.canvas = this.createOffscreenCanvas();
+        this._direction = 'left'; // Internal storage for direction
+        this.canvas = this.createOffscreenCanvas(this._direction);
     }
 
-    createOffscreenCanvas() {
+    // Setter for direction property
+    set direction(newDirection) {
+        if (this._direction !== newDirection) {
+            this._direction = newDirection;
+            this.canvas = this.createOffscreenCanvas(this._direction); // Regenerate canvas on direction change
+        }
+    }
+
+    // Getter for direction property
+    get direction() {
+        return this._direction;
+    }
+
+    createOffscreenCanvas(direction) {
         const horseCanvas = document.createElement('canvas');
         const horseCtx = horseCanvas.getContext('2d');
+        // Set canvas dimensions explicitly to avoid truncation issues
+        horseCanvas.width = ballRadius * 4; // Sufficient width for ball and triangle
+        horseCanvas.height = ballRadius * 4; // Sufficient height
+
         const ballInnerRadius = 10;
-        const ballSize = ballRadius * 2;
+        const ballSize = horseCanvas.width / 2; // Center the ball in the canvas
 
         // Draw the ball onto the off-screen canvas
         horseCtx.beginPath();
@@ -48,16 +66,25 @@ class Horse {
         horseCtx.stroke();
         horseCtx.closePath();
 
-        // Draw the small triangle to the right of the ball
+        // Draw the small triangle
         const triangleBase = 6;
         const triangleHeight = 8;
-        const triangleX = ballSize + ballRadius - 1;
         const triangleY = ballSize;
+        let triangleX;
 
         horseCtx.beginPath();
-        horseCtx.moveTo(triangleX, triangleY - triangleHeight / 2);
-        horseCtx.lineTo(triangleX + triangleBase, triangleY);
-        horseCtx.lineTo(triangleX, triangleY + triangleHeight / 2);
+        if (direction === 'left') {
+            triangleX = ballSize - ballRadius + 1; // Position for left-pointing triangle
+            horseCtx.moveTo(triangleX, triangleY - triangleHeight / 2);
+            horseCtx.lineTo(triangleX - triangleBase, triangleY);
+            horseCtx.lineTo(triangleX, triangleY + triangleHeight / 2);
+        } else { // 'right'
+            triangleX = ballSize + ballRadius - 1; // Position for right-pointing triangle
+            horseCtx.moveTo(triangleX, triangleY - triangleHeight / 2);
+            horseCtx.lineTo(triangleX + triangleBase, triangleY);
+            horseCtx.lineTo(triangleX, triangleY + triangleHeight / 2);
+        }
+
         horseCtx.fillStyle = this.color;
         horseCtx.fill();
         horseCtx.closePath();
@@ -66,7 +93,8 @@ class Horse {
     }
 
     draw() {
-        ctx.drawImage(this.canvas, this.x - ballRadius, this.y - ballRadius);
+        // Adjust drawing to center the offscreen canvas content relative to horse's x,y
+        ctx.drawImage(this.canvas, this.x - this.canvas.width / 2, this.y - this.canvas.height / 2);
     }
 }
 
@@ -84,6 +112,21 @@ const horseProperties = [
 const horses = horseProperties.map((prop, i) =>
     new Horse(prop.number, prop.color, prop.textColor, horsePositions[0].positions[i].x, horsePositions[0].positions[i].y)
 );
+
+// Pre-process horsePositions to ensure direction is set for all keyframes
+let lastDirection = 'left'; // Default initial direction
+for (const keyframe of horsePositions) {
+    if (!keyframe.direction) {
+        keyframe.direction = lastDirection;
+    } else {
+        // Ensure the direction is valid, otherwise default to 'left'
+        if (keyframe.direction !== 'left' && keyframe.direction !== 'right') {
+            console.warn(`Invalid direction '${keyframe.direction}' in keyframe at second ${keyframe.second}. Defaulting to 'left'.`);
+            keyframe.direction = 'left';
+        }
+        lastDirection = keyframe.direction;
+    }
+}
 
 const options = { mimeType: 'video/webm; codecs=vp9' };
 let mediaRecorder;
@@ -112,16 +155,18 @@ function animate() {
 
     let fromKeyFrame, toKeyFrame;
     for (let i = 0; i < horsePositions.length - 1; i++) {
-        if (currentTimeInSeconds >= horsePositions[i].second && currentTimeInSeconds < horsePositions[i+1].second) {
+        if (currentTimeInSeconds >= horsePositions[i].second && currentTimeInSeconds < horsePositions[i + 1].second) {
             fromKeyFrame = horsePositions[i];
-            toKeyFrame = horsePositions[i+1];
+            toKeyFrame = horsePositions[i + 1];
             break;
         }
     }
 
     let interpolatedPositions = [];
+    let currentAnimationDirection = 'left'; // Default for the current segment
 
     if (fromKeyFrame && toKeyFrame) {
+        currentAnimationDirection = fromKeyFrame.direction; // Get direction from the segment's start keyframe
         const timeInSegment = currentTimeInSeconds - fromKeyFrame.second;
         const segmentDuration = toKeyFrame.second - fromKeyFrame.second;
         const segmentProgress = timeInSegment / segmentDuration;
@@ -136,23 +181,35 @@ function animate() {
             interpolatedPositions.push({ x: interpolatedX, y: interpolatedY });
         }
     } else {
-        // before first keyframe or after last keyframe, draw the last frame
+        // If before first keyframe or after last keyframe, use the last known state
         const lastKeyFrame = horsePositions[horsePositions.length - 1];
+        currentAnimationDirection = lastKeyFrame.direction;
         for (let i = 0; i < horses.length; i++) {
             interpolatedPositions.push({ x: lastKeyFrame.positions[i].x, y: lastKeyFrame.positions[i].y });
         }
     }
 
-    const topX = 0;
-    const topHorseRightMargin = 50;
+    const topX = 0; // Lead horse is at x=0
+    const topHorseMargin = 50; // Margin from the edge of the canvas
 
     for (let i = 0; i < horses.length; i++) {
         const pos = interpolatedPositions[i];
-        horses[i].x = canvas.width - topHorseRightMargin - (topX - pos.x) * ballRadius * 2;
+        horses[i].direction = currentAnimationDirection; // Set direction, triggers canvas regeneration if changed
+
+        // Calculate x position based on direction
+        // (topX - pos.x) gives the distance *behind* the leader (positive value for trailing horses)
+        if (currentAnimationDirection === 'left') {
+            // Running left: leader at left margin, trailing horses to its right
+            horses[i].x = topHorseMargin + (topX - pos.x) * ballRadius * 2;
+        } else { // currentAnimationDirection === 'right'
+            // Running right: leader at right margin, trailing horses to its left
+            horses[i].x = canvas.width - topHorseMargin - (topX - pos.x) * ballRadius * 2;
+        }
+
         horses[i].y = pos.y;
         horses[i].draw();
     }
-    
+
     currentFrame = (currentFrame + 1);
     if (currentFrame >= totalAnimationFrames) {
         currentFrame = totalAnimationFrames;
@@ -172,7 +229,7 @@ recordButton.addEventListener('click', () => {
         // Start recording
         isRecording = true;
         currentFrame = 0;
-        
+
         const stream = canvas.captureStream(FPS);
         mediaRecorder = new MediaRecorder(stream, options);
 
