@@ -60,7 +60,7 @@ class Horse {
 
         // Draw the outer circle
         horseCtx.beginPath();
-        horseCtx.arc(ballSize, ballSize, ballRadius, 0.15 * Math.PI, 1.85 * Math.PI);
+        horseCtx.arc(ballSize, ballSize, ballRadius, 0 * Math.PI, 2 * Math.PI);
         horseCtx.strokeStyle = this.color;
         horseCtx.lineWidth = 1;
         horseCtx.stroke();
