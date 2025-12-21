@@ -54,7 +54,7 @@ const horsePositions = [
     },
     {
         second: 10,
-        direction: 'left',
+        direction: 'right',
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
         positions: [
             { x: -1, y: 10 }, { x: -6.5, y: 10 }, { x: -4.5, y: 25 }, { x: -3, y: 20 },
