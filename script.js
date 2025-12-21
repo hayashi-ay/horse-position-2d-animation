@@ -7,7 +7,8 @@ const ctx = canvas.getContext('2d');
 const CONFIG = {
     BALL_RADIUS: 12,
     FPS: 60,
-    TOP_HORSE_MARGIN: 50,
+    HORSE_MARGIN_X: 50,
+    HORSE_MARGIN_Y: 5,
     VIDEO_START_TIME_OFFSET: (1 * 60) + 39,
     MEDIA_RECORDER_OPTIONS: { mimeType: 'video/webm; codecs=vp9' },
     HORSES: [
@@ -188,10 +189,12 @@ function animate() {
         const pos = interpolatedPositions[i];
         
         // 1. Calculate Base Position (as if direction is 'left')
-        // Lead horse (x=0) is at CONFIG.TOP_HORSE_MARGIN
-        // y is pixels from bottom when direction is 'left'
-        const baseX = CONFIG.TOP_HORSE_MARGIN + (0 - pos.x) * CONFIG.BALL_RADIUS * 2;
-        const baseY = canvas.height - pos.y - 5;
+        // Lead horse (x=0) is at CONFIG.HORSE_MARGIN_X
+        // y is distance from the "inner rail" (Top for Left, Bottom for Right)
+        // Since we rotate around the center, a point at Top (y) rotates to Bottom (h-y)
+        // So we use pos.y directly as the base Y coordinate.
+        const baseX = CONFIG.HORSE_MARGIN_X + (0 - pos.x) * CONFIG.BALL_RADIUS * 2;
+        const baseY = pos.y + CONFIG.HORSE_MARGIN_Y;
 
         // 2. Center coordinates relative to canvas center
         const rx = baseX - cx;

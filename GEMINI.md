@@ -19,8 +19,8 @@ The animation simulates a 1500-meter horse race. The `horsePositions.js` file st
 
 -   **`x` position (horse lengths from lead):** Represents the horse's distance in horse lengths behind the current lead horse. A value of 0 indicates the horse is the lead horse. Negative values indicate the horse is ahead of the previous theoretical lead.
 -   **`y` position (pixels):** Represents the horse's vertical position relative to the "Inner Rail". 
-    *   **If direction is 'left'**: `y` is measured from the **bottom** edge of the canvas.
-    *   **If direction is 'right'**: `y` is measured from the **top** edge of the canvas.
+    *   **If direction is 'left'**: `y` is measured from the **top** edge of the canvas.
+    *   **If direction is 'right'**: `y` is measured from the **bottom** edge of the canvas.
     This convention ensures that a constant `y` value represents the horse maintaining its lane relative to the track's center.
 
 ## Cornering Animation Logic (Proposed)
@@ -39,7 +39,7 @@ To simulate the horses running on a circular track (corners) and switching direc
 
 3.  **Interpolation & Rotation:**
     -   **Linear Phase:** Calculate the horses' positions as if they were on a horizontal straight line. 
-    -   **Coordinate System**: We define the base "Inner Rail" at the bottom of the coordinate system. Thus, `baseY = canvas.height - y`.
+    -   **Coordinate System**: We define the base "Inner Rail" at the top of the coordinate system. Thus, `baseY = y`.
     -   **Angle Calculation:** Interpolate a rotation angle (`theta`) based on the segment progress.
         -   'left' -> 'right': 0 to PI.
         -   'right' -> 'left': PI back to 0.
