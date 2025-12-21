@@ -189,8 +189,9 @@ function animate() {
         
         // 1. Calculate Base Position (as if direction is 'left')
         // Lead horse (x=0) is at CONFIG.TOP_HORSE_MARGIN
+        // y is pixels from bottom when direction is 'left'
         const baseX = CONFIG.TOP_HORSE_MARGIN + (0 - pos.x) * CONFIG.BALL_RADIUS * 2;
-        const baseY = pos.y;
+        const baseY = canvas.height - pos.y - 5;
 
         // 2. Center coordinates relative to canvas center
         const rx = baseX - cx;

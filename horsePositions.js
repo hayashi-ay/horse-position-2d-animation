@@ -43,6 +43,15 @@ const horsePositions = [
         ]
     },
     {
+        second: 2,
+        direction: 'left',
+        // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
+        positions: [
+            { x: -1, y: 10 }, { x: -5.0, y: 15 }, { x: -4, y: 25 }, { x: -3, y: 20 },
+            { x: -6, y: 25 }, { x: -7, y: 40 }, { x: -4.5, y: 45 }, { x: 0, y: 40 }
+        ]
+    },
+    {
         // tmp to check rotation and this item will be deleted
         second: 3,
         direction: 'right',

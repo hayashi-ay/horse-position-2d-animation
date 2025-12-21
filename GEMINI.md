@@ -13,6 +13,16 @@ This project generates 2D animations of horse positions during a race using HTML
 
 This project exclusively uses **HTML, CSS, and vanilla JavaScript**. It avoids modern frameworks, TypeScript, or ES6+ features that require a build toolchain. This approach ensures the project can be run directly in a browser without a complex local environment setup, sidestepping issues like Cross-Origin Resource Sharing (CORS) that often arise when serving assets or testing with more advanced JavaScript features without a dedicated server.
 
+## Animation Logic
+
+The animation simulates a 1500-meter horse race. The `horsePositions.js` file stores keyframes in an array of objects. Each object contains the `second` of the keyframe and an array of `positions` for each horse.
+
+-   **`x` position (horse lengths from lead):** Represents the horse's distance in horse lengths behind the current lead horse. A value of 0 indicates the horse is the lead horse. Negative values indicate the horse is ahead of the previous theoretical lead.
+-   **`y` position (pixels):** Represents the horse's vertical position relative to the "Inner Rail". 
+    *   **If direction is 'left'**: `y` is measured from the **bottom** edge of the canvas.
+    *   **If direction is 'right'**: `y` is measured from the **top** edge of the canvas.
+    This convention ensures that a constant `y` value represents the horse maintaining its lane relative to the track's center.
+
 ## Cornering Animation Logic (Proposed)
 
 To simulate the horses running on a circular track (corners) and switching directions (e.g., from the backstretch to the homestretch), we will implement a field rotation mechanism.
@@ -28,26 +38,19 @@ To simulate the horses running on a circular track (corners) and switching direc
         ```
 
 3.  **Interpolation & Rotation:**
-    -   **Linear Phase:** Calculate the horses' positions as if they were on a horizontal straight line. It is crucial to center this line relative to the canvas center (lead horse or pack center aligned to `cx`) before rotation, or use the standard "Lead at Margin" logic and rotate the entire resulting coordinate system.
+    -   **Linear Phase:** Calculate the horses' positions as if they were on a horizontal straight line. 
+    -   **Coordinate System**: We define the base "Inner Rail" at the bottom of the coordinate system. Thus, `baseY = canvas.height - y`.
     -   **Angle Calculation:** Interpolate a rotation angle (`theta`) based on the segment progress.
-        -   Start Angle: 0 radians (Standard 'left' view).
-        -   End Angle: Math.PI radians (Standard 'right' view).
+        -   'left' -> 'right': 0 to PI.
+        -   'right' -> 'left': PI back to 0.
     -   **Coordinate Transformation:**
         -   Translate the horse's position so the canvas center is the origin `(0, 0)`.
-        -   Apply 2D rotation:
-            ```javascript
-            x' = x * cos(theta) - y * sin(theta)
-            y' = x * sin(theta) + y * cos(theta)
-            ```
-    -   **Elliptical Compression (Aspect Ratio):**
-        -   Since the canvas is wider than it is tall (e.g., 360x120), a straight line of horses rotating 90 degrees would exceed the vertical bounds.
-        -   We must compress the position when it aligns with the vertical axis.
-        -   Scale factor: `verticalScale = canvas.height / canvas.width` (or a specific ratio like 0.4).
-        -   Apply scaling to the rotated coordinates, often primarily affecting the dimension that was originally horizontal. Or simply projecting onto an ellipse.
+        -   Apply 2D rotation and elliptical compression (Aspect Ratio).
+        -   Translate back and render.
 
 4.  **Rendering:**
-    -   Translate the coordinates back to the canvas center `(cx, cy)` and draw the horses.
-    -   The individual horse icons/orientation might also need to rotate to match the track tangent, or remain upright depending on the desired aesthetic.
+    -   The horse's body (circle + pointer) rotates with the field, but the horse's number remains upright for readability.
+
 
 This logic allows for a smooth visual transition between the two viewing directions without an abrupt cut.
 
