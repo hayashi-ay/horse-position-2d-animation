@@ -1,6 +1,7 @@
 const canvas = document.getElementById('animationCanvas');
 const recordButton = document.getElementById('recordButton');
 const debugTime = document.getElementById('debugTime');
+const actualTime = document.getElementById('actualTime');
 const ctx = canvas.getContext('2d');
 
 const CONFIG = {
@@ -116,8 +117,22 @@ const horses = CONFIG.HORSES.map((prop, i) =>
     new Horse(prop.number, prop.color, prop.textColor)
 );
 
+let animationStartTime = null;
+
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    if (currentFrame === 0) {
+        animationStartTime = performance.now();
+    }
+    if (animationStartTime) {
+        const now = performance.now();
+        const elapsed = (now - animationStartTime) / 1000;
+        const totalSeconds = Math.floor(CONFIG.VIDEO_START_TIME_OFFSET + elapsed);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        actualTime.innerText = `Actual Time: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
 
     const currentTimeInSeconds = currentFrame / CONFIG.FPS;
 
