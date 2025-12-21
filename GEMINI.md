@@ -24,74 +24,44 @@ The `script.js` file orchestrates the animation:
 
 1.  **Keyframe Search:** For each frame of the animation, the script calculates the `currentTimeInSeconds`. It then searches the `horsePositions` array to find the two keyframes that the current time falls between.
 2.  **Interpolation:** The horse's `x` and `y` positions are linearly interpolated between these two keyframes based on the `currentTimeInSeconds`. This allows for smooth animation even with unevenly spaced keyframes.
-3.  **Relative Positioning:** To focus on the race leaders, the animation displays horses relative to the horse currently furthest ahead (the "top horse").
-    *   The `x` position of the top horse is found for the current interpolated frame.
-    *   A `scale` factor (`canvas.width / 400`) is applied, meaning a 400-meter span of the race is visually represented across the entire canvas width. This effectively "zooms in" on the leading horses.
-    *   The top horse is drawn at a fixed distance (50 pixels) from the right edge of the canvas.
-    *   All other horses are positioned to the left of the top horse based on their `x` difference in meters, scaled to canvas pixels.
-    *   The `y` position for drawing remains the interpolated `y` from the keyframes.
+3.  **Relative Positioning and Direction:** The animation displays horses relative to the lead horse (where `x=0`). The view depends on the `direction` property of the current keyframe segment ('left' or 'right').
+    *   A `topHorseMargin` (50 pixels) is used as the base offset for the leader.
+    *   **If direction is 'left'**: The lead horse is drawn at `topHorseMargin` from the left edge. Trailing horses are positioned to its right based on their `x` distance multiplied by `ballRadius * 2`.
+    *   **If direction is 'right'**: The lead horse is drawn at `topHorseMargin` from the right edge. Trailing horses are positioned to its left.
+    *   Each horse is drawn as a circle with its number, surrounded by an outer stroke, and a small triangle indicating its current direction.
 
-This approach allows the animation to dynamically adjust its view, always keeping the most competitive part of the race visible.
+This approach allows the animation to dynamically adjust its view and direction, keeping the leading horses in focus.
 
 ## Keyframe Data (`horsePositions.js`)
 
+The race data is manually set by analyzing the race movie. Each entry in the `horsePositions` array is a keyframe, representing the state of the race at a specific time.
+
+**DATA STRUCTURE:**
+The `horsePositions` array is an array of objects:
+- `second`: The time in seconds from the start of the animation.
+- `direction`: (Optional) 'left' or 'right'. If omitted, it defaults to the previous keyframe's direction.
+- `positions`: An array of 8 objects, each representing a horse's position:
+    - `x`: Horse lengths from the lead. A value of 0 indicates the lead horse. Negative values (e.g., -5) indicate the horse is trailing.
+    - `y`: The vertical position in pixels on the canvas.
+
+**HORSE ORDER:**
+The horses are always in the same order in the `positions` array:
+1. White, 2. Black, 3. Red, 4. Blue, 5. Yellow, 6. Green, 7. Orange, 8. Pink.
+
+**RANKING COMMENTS:**
+Comments above each `positions` array indicate the confirmed or estimated ranking of horses at that specific second. These should be respected when updating data.
+
+Example keyframe:
 ```javascript
-The important positions are manually set by analyzing the race movie. The race starts at 1:20 and the top horse crosses the finish line at 2:56. The animation, however, focuses on the segment from 1:39 to 2:49. Each entry in the `horsePositions` array is a keyframe, representing the state of the race at a specific time.
-//
-// DATA STRUCTURE:
-// The `horsePositions` array is an array of objects, where each object has two properties:
-// - `second`: The time in seconds from the start of the animation when this keyframe occurs.
-// - `positions`: An array of 8 objects, each representing a horse's position.
-- **Horse Ranking Comments**: The comments above each `positions` array indicate the ranking of horses at that specific `second` in the animation. This ranking should be respected and not violated by subsequent changes to the position data.
-//
-// HORSE ORDER:
-// 1. white, 2. black, 3. red, 4. blue, 5. yellow, 6. green, 7. orange, 8. pink
-//
-// --- IMPORTANT ---
-// The 'x' and 'y' values below are currently placeholders and need to be filled in.
-const horsePositions = [
-    // Race Start: 1:39 in the video, which is Second 0 of our animation.
-    {
-        second: 0,
-        // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
-        positions: [
-            { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
-        ]
-    },
-    // At 2:12 in the video (33 seconds into animation), black passes orange.
-    {
-        second: 33,
-        positions: [
-            { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
-        ]
-    },
-    // At 2:24 in the video (45 seconds into animation), blue passes white.
-    {
-        second: 45,
-        positions: [
-            { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
-        ]
-    },
-    // At 2:45 in the video (66 seconds into animation), blue passes pink.
-    {
-        second: 66,
-        positions: [
-            { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
-        ]
-    },
-    // At 2:49 in the video (70 seconds into animation).
-    {
-        second: 70,
-        positions: [
-            { x: 195, y: 10 }, { x: 150, y: 5 }, { x: 170, y: 25 }, { x: 180, y: 20 },
-            { x: 145, y: 20 }, { x: 130, y: 20 }, { x: 165, y: 30 }, { x: 200, y: 30 }
-        ]
-    }
-];
+{
+    second: 33,
+    direction: 'left',
+    // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
+    positions: [
+        { x: -0.5, y: 25 }, { x: -5, y: 10 }, { x: -3.5, y: 15 }, { x: -1.5, y: 10 },
+        { x: -7, y: 35 }, { x: -10, y: 50 }, { x: -6, y: 25 }, { x: 0, y: 10 }
+    ]
+},
 ```
 
 ## Gemini Agent Instructions
