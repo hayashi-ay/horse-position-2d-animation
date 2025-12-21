@@ -154,7 +154,7 @@ function animate() {
         if (fromDir === 'left' && toDir === 'right') {
             theta = segmentProgress * Math.PI;
         } else if (fromDir === 'right' && toDir === 'left') {
-            theta = -segmentProgress * Math.PI;
+            theta = Math.PI + segmentProgress * Math.PI;
         } else if (fromDir === 'right') {
             theta = Math.PI;
         } else {
