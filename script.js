@@ -119,9 +119,7 @@ const horses = CONFIG.HORSES.map((prop, i) =>
 
 let animationStartTime = null;
 
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-
+function displayDebugTime(currentTimeInSeconds) {
     if (currentFrame === 0) {
         animationStartTime = performance.now();
     }
@@ -134,12 +132,16 @@ function animate() {
         actualTime.innerText = `Actual Time: ${minutes}:${seconds.toString().padStart(2, '0')}`;
     }
 
-    const currentTimeInSeconds = currentFrame / CONFIG.FPS;
-
     const totalSeconds = Math.floor(CONFIG.VIDEO_START_TIME_OFFSET + currentTimeInSeconds);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     debugTime.innerText = `Time: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    const currentTimeInSeconds = currentFrame / CONFIG.FPS;
+    displayDebugTime(currentTimeInSeconds);
 
     let fromKeyFrame, toKeyFrame;
     for (let i = 0; i < horsePositions.length - 1; i++) {
