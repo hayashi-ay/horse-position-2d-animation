@@ -64,12 +64,7 @@ class Horse {
         horseCtx.fill();
         horseCtx.closePath();
 
-        // Draw the number inside the ball on the off-screen canvas
-        horseCtx.font = "10px Arial";
-        horseCtx.textAlign = "center";
-        horseCtx.textBaseline = "middle";
-        horseCtx.fillStyle = this.textColor;
-        horseCtx.fillText(this.number, ballSize, ballSize);
+
 
         // Draw the outer circle
         horseCtx.beginPath();
@@ -86,17 +81,10 @@ class Horse {
         let triangleX;
 
         horseCtx.beginPath();
-        if (direction === 'left') {
-            triangleX = ballSize - CONFIG.BALL_RADIUS + 1; // Position for left-pointing triangle
-            horseCtx.moveTo(triangleX, triangleY - triangleHeight / 2);
-            horseCtx.lineTo(triangleX - triangleBase, triangleY);
-            horseCtx.lineTo(triangleX, triangleY + triangleHeight / 2);
-        } else { // 'right'
-            triangleX = ballSize + CONFIG.BALL_RADIUS - 1; // Position for right-pointing triangle
-            horseCtx.moveTo(triangleX, triangleY - triangleHeight / 2);
-            horseCtx.lineTo(triangleX + triangleBase, triangleY);
-            horseCtx.lineTo(triangleX, triangleY + triangleHeight / 2);
-        }
+        triangleX = ballSize - CONFIG.BALL_RADIUS + 1; // Position for left-pointing triangle
+        horseCtx.moveTo(triangleX, triangleY - triangleHeight / 2);
+        horseCtx.lineTo(triangleX - triangleBase, triangleY);
+        horseCtx.lineTo(triangleX, triangleY + triangleHeight / 2);
 
         horseCtx.fillStyle = this.color;
         horseCtx.fill();
@@ -111,6 +99,12 @@ class Horse {
         ctx.rotate(this.rotation);
         // Draw centered at (0,0) after translation
         ctx.drawImage(this.canvas, -this.canvas.width / 2, -this.canvas.height / 2);
+                // Draw the number inside the ball on the off-screen canvas
+        horseCtx.font = "10px Arial";
+        horseCtx.textAlign = "center";
+        horseCtx.textBaseline = "middle";
+        horseCtx.fillStyle = this.textColor;
+        horseCtx.fillText(this.number, ballSize, ballSize);
         ctx.restore();
     }
 }
@@ -174,7 +168,7 @@ function animate() {
         if (fromDir === 'left' && toDir === 'right') {
             theta = segmentProgress * Math.PI;
         } else if (fromDir === 'right' && toDir === 'left') {
-            theta = Math.PI + segmentProgress * Math.PI;
+            theta = - segmentProgress * Math.PI;
         } else if (fromDir === 'right') {
             theta = Math.PI;
         } else {
