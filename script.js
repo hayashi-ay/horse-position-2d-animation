@@ -64,7 +64,12 @@ class Horse {
         horseCtx.fill();
         horseCtx.closePath();
 
-
+        // Draw the number inside the ball on the off-screen canvas
+        horseCtx.font = "10px Arial";
+        horseCtx.textAlign = "center";
+        horseCtx.textBaseline = "middle";
+        horseCtx.fillStyle = this.textColor;
+        horseCtx.fillText(this.number, ballSize, ballSize);
 
         // Draw the outer circle
         horseCtx.beginPath();
@@ -99,12 +104,6 @@ class Horse {
         ctx.rotate(this.rotation);
         // Draw centered at (0,0) after translation
         ctx.drawImage(this.canvas, -this.canvas.width / 2, -this.canvas.height / 2);
-                // Draw the number inside the ball on the off-screen canvas
-        horseCtx.font = "10px Arial";
-        horseCtx.textAlign = "center";
-        horseCtx.textBaseline = "middle";
-        horseCtx.fillStyle = this.textColor;
-        horseCtx.fillText(this.number, ballSize, ballSize);
         ctx.restore();
     }
 }
@@ -168,7 +167,7 @@ function animate() {
         if (fromDir === 'left' && toDir === 'right') {
             theta = segmentProgress * Math.PI;
         } else if (fromDir === 'right' && toDir === 'left') {
-            theta = - segmentProgress * Math.PI;
+            theta = -segmentProgress * Math.PI;
         } else if (fromDir === 'right') {
             theta = Math.PI;
         } else {
