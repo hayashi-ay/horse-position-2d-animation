@@ -30,24 +30,10 @@ class Horse {
         this.x = initX;
         this.y = initY;
         this.rotation = 0; // Rotation in radians
-        this._direction = 'left'; // Internal storage for direction
-        this.canvas = this.createOffscreenCanvas(this._direction);
+        this.canvas = this.createOffscreenCanvas();
     }
 
-    // Setter for direction property
-    set direction(newDirection) {
-        if (this._direction !== newDirection) {
-            this._direction = newDirection;
-            this.canvas = this.createOffscreenCanvas(this._direction); // Regenerate canvas on direction change
-        }
-    }
-
-    // Getter for direction property
-    get direction() {
-        return this._direction;
-    }
-
-    createOffscreenCanvas(direction) {
+    createOffscreenCanvas() {
         const horseCanvas = document.createElement('canvas');
         const horseCtx = horseCanvas.getContext('2d');
         // Set canvas dimensions explicitly to avoid truncation issues
@@ -64,13 +50,6 @@ class Horse {
         horseCtx.fill();
         horseCtx.closePath();
 
-        // Draw the number inside the ball on the off-screen canvas
-        horseCtx.font = "10px Arial";
-        horseCtx.textAlign = "center";
-        horseCtx.textBaseline = "middle";
-        horseCtx.fillStyle = this.textColor;
-        horseCtx.fillText(this.number, ballSize, ballSize);
-
         // Draw the outer circle
         horseCtx.beginPath();
         horseCtx.arc(ballSize, ballSize, CONFIG.BALL_RADIUS, 0 * Math.PI, 2 * Math.PI);
@@ -83,10 +62,9 @@ class Horse {
         const triangleBase = 6;
         const triangleHeight = 8;
         const triangleY = ballSize;
-        let triangleX;
+        const triangleX = ballSize - CONFIG.BALL_RADIUS + 1; // Position for left-pointing triangle
 
         horseCtx.beginPath();
-        triangleX = ballSize - CONFIG.BALL_RADIUS + 1; // Position for left-pointing triangle
         horseCtx.moveTo(triangleX, triangleY - triangleHeight / 2);
         horseCtx.lineTo(triangleX - triangleBase, triangleY);
         horseCtx.lineTo(triangleX, triangleY + triangleHeight / 2);
@@ -101,9 +79,20 @@ class Horse {
     draw() {
         ctx.save();
         ctx.translate(this.x, this.y);
+
+        // 1. Draw the rotated body (circle + triangle)
+        ctx.save();
         ctx.rotate(this.rotation);
-        // Draw centered at (0,0) after translation
         ctx.drawImage(this.canvas, -this.canvas.width / 2, -this.canvas.height / 2);
+        ctx.restore();
+
+        // 2. Draw the upright number
+        ctx.font = "10px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = this.textColor;
+        ctx.fillText(this.number, 0, 0);
+
         ctx.restore();
     }
 }
@@ -152,7 +141,6 @@ function animate() {
 
     let interpolatedPositions = [];
     let theta = 0;
-    let currentAnimationDirection = 'left';
 
     if (fromKeyFrame && toKeyFrame) {
         const timeInSegment = currentTimeInSeconds - fromKeyFrame.second;
@@ -161,7 +149,6 @@ function animate() {
 
         const fromDir = fromKeyFrame.direction || 'left';
         const toDir = toKeyFrame.direction || fromDir;
-        currentAnimationDirection = fromDir; // Base direction for triangle, though rotation overrides visual
 
         // Calculate Theta (Rotation Angle)
         if (fromDir === 'left' && toDir === 'right') {
@@ -188,7 +175,6 @@ function animate() {
         const lastKeyFrame = horsePositions[horsePositions.length - 1];
         const lastDir = lastKeyFrame.direction || 'left';
         theta = (lastDir === 'right') ? Math.PI : 0;
-        currentAnimationDirection = lastDir;
         for (let i = 0; i < horses.length; i++) {
             interpolatedPositions.push({ x: lastKeyFrame.positions[i].x, y: lastKeyFrame.positions[i].y });
         }
@@ -225,17 +211,6 @@ function animate() {
         horses[i].x = finalX;
         horses[i].y = finalY;
         horses[i].rotation = theta;
-        
-        // Update direction for the triangle icon
-        // If we are rotating, the concept of 'left/right' icon is less strict, 
-        // but let's flip it at the 90-degree mark for cleanliness.
-        // Normalized theta check (0-2PI)
-        const normTheta = theta % (2 * Math.PI);
-        if (normTheta > Math.PI / 2 && normTheta < 3 * Math.PI / 2) {
-            horses[i].direction = 'right';
-        } else {
-            horses[i].direction = 'left';
-        }
 
         horses[i].draw();
     }
