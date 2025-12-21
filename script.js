@@ -21,10 +21,6 @@ const CONFIG = {
     ]
 };
 
-let currentFrame = 0;
-const totalAnimationDurationInSeconds = horsePositions[horsePositions.length - 1].second;
-const totalAnimationFrames = totalAnimationDurationInSeconds * CONFIG.FPS;
-
 class Horse {
     constructor(number, color, textColor, initX, initY) {
         this.number = number;
@@ -113,6 +109,9 @@ class Horse {
     }
 }
 
+let currentFrame = 0;
+const totalAnimationDurationInSeconds = horsePositions[horsePositions.length - 1].second;
+const totalAnimationFrames = totalAnimationDurationInSeconds * CONFIG.FPS;
 const horses = CONFIG.HORSES.map((prop, i) =>
     new Horse(prop.number, prop.color, prop.textColor)
 );
@@ -183,9 +182,10 @@ function animate() {
         horses[i].draw();
     }
 
-    currentFrame = (currentFrame + 1);
+    currentFrame += 1;
     if (currentFrame >= totalAnimationFrames) {
-        currentFrame = totalAnimationFrames;
+        // end recording
+        return;
     }
     requestAnimationFrame(animate);
 }
