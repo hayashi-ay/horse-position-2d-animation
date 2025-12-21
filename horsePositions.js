@@ -42,19 +42,10 @@ const horsePositions = [
             { x: -6, y: 25 }, { x: -7, y: 40 }, { x: -4.5, y: 45 }, { x: 0, y: 40 }
         ]
     },
+    // At 1:48
     {
-        second: 2,
+        second: 9,
         direction: 'left',
-        // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
-        positions: [
-            { x: -1, y: 10 }, { x: -5.0, y: 15 }, { x: -4, y: 25 }, { x: -3, y: 20 },
-            { x: -6, y: 25 }, { x: -7, y: 40 }, { x: -4.5, y: 45 }, { x: 0, y: 40 }
-        ]
-    },
-    {
-        // tmp to check rotation and this item will be deleted
-        second: 3,
-        direction: 'right',
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
         positions: [
             { x: -1, y: 10 }, { x: -6.5, y: 10 }, { x: -4.5, y: 25 }, { x: -3, y: 20 },
@@ -73,7 +64,7 @@ const horsePositions = [
     // At 1:55, all horses' positions can be confirmed
     {
         second: 16,
-        direction: 'left',
+        direction: 'right',
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
         positions: [
             { x: -1.5, y: 15 }, { x: -6.5, y: 15 }, { x: -5, y: 20 }, { x: -2, y: 25 },
@@ -83,7 +74,7 @@ const horsePositions = [
     // Estimated Data at 2:05, it's assumed that black passed orange at the time
     {
         second: 26,
-        direction: 'left',
+        direction: 'right',
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE, 7: YELLOW, 8: GREEN
         positions: [
             { x: -0.9, y: 25 }, { x: -7, y: 15 }, { x: -4, y: 17 }, { x: -1.8, y: 15 },
@@ -93,7 +84,7 @@ const horsePositions = [
     // At 2:12, it's confirmed that black passes orange.
     {
         second: 33,
-        direction: 'left',
+        direction: 'right',
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
         positions: [
             { x: -0.5, y: 25 }, { x: -5, y: 10 }, { x: -3.5, y: 15 }, { x: -1.5, y: 10 },
@@ -103,7 +94,7 @@ const horsePositions = [
     // Estimated at 2:16, Copy data at 2:12
     {
         second: 37,
-        direction: 'left',
+        direction: 'right',
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
         positions: [
             { x: -0.5, y: 25 }, { x: -5, y: 10 }, { x: -3.5, y: 15 }, { x: -1.5, y: 10 },
@@ -113,7 +104,7 @@ const horsePositions = [
     // Estimated at 2:21, green is approaching inner
     {
         second: 42,
-        direction: 'left',
+        direction: 'right',
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
         positions: [
             { x: -0.5, y: 25 }, { x: -5, y: 10 }, { x: -3.5, y: 15 }, { x: -1.5, y: 10 },
@@ -123,7 +114,7 @@ const horsePositions = [
     // At 2:23, blue and white are competing
     {
         second: 44,
-        direction: 'left',
+        direction: 'right',
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
         positions: [
             { x: -1.5, y: 22 }, { x: -5, y: 25 }, { x: -4, y: 10 }, { x: -1.5, y: 9 },
@@ -133,7 +124,7 @@ const horsePositions = [
     // At 2:24, blue passes white.
     {
         second: 45,
-        direction: 'left',
+        direction: 'right',
         // 1: PINK, 2: BLUE, 3: WHITE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
         positions: [
             { x: -1.3, y: 22 }, { x: -5, y: 25 }, { x: -4, y: 10 }, { x: -1.0, y: 5 },
@@ -142,8 +133,8 @@ const horsePositions = [
     },
      // At 2:28, blue make 1 horse length to white
     {
-        second: 45,
-        direction: 'left',
+        second: 49,
+        direction: 'right',
         // 1: PINK, 2: BLUE, 3: WHITE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
         positions: [
             { x: -2.0, y: 22 }, { x: -5, y: 25 }, { x: -4, y: 10 }, { x: -1.0, y: 5 },
@@ -153,6 +144,26 @@ const horsePositions = [
     // At 2:38, is's confirmed that yellow passes orange.
     {
         second: 59,
+        direction: 'right',
+        // 1: PINK, 2: BLUE, 3: WHITE, 4: RED, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
+        positions: [
+            { x: -3, y: 25 }, { x: -4, y: 40 }, { x: -3, y: 15 }, { x: 0, y: 25 },
+            { x: -6, y: 30 }, { x: -9, y: 22 }, { x: -7, y: 20 }, { x: 0, y: 15 }
+        ]
+    },
+    // At 2:40
+    {
+        second: 61,
+        direction: 'right',
+        // 1: PINK, 2: BLUE, 3: WHITE, 4: RED, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
+        positions: [
+            { x: -3, y: 25 }, { x: -4, y: 40 }, { x: -3, y: 15 }, { x: 0, y: 25 },
+            { x: -6, y: 30 }, { x: -9, y: 22 }, { x: -7, y: 20 }, { x: 0, y: 15 }
+        ]
+    },
+    // At 2:41
+    {
+        second: 62,
         direction: 'left',
         // 1: PINK, 2: BLUE, 3: WHITE, 4: RED, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
         positions: [
