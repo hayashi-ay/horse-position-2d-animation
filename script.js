@@ -129,20 +129,15 @@ for (const keyframe of horsePositions) {
 }
 
 const options = { mimeType: 'video/webm; codecs=vp9' };
+if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+    console.error(`VP9 codec is not supported on this browser. MIME type: ${options.mimeType}`);
+}
+
 let mediaRecorder;
 let recordedChunks = [];
 let isRecording = false;
 
 function animate() {
-    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-        console.log("Not Supported");
-        return;
-    }
-
-    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-        console.error("VP9 codec is not supported on this browser.");
-    }
-
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     const currentTimeInSeconds = currentFrame / FPS;
