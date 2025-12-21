@@ -117,10 +117,6 @@ const horses = CONFIG.HORSES.map((prop, i) =>
     new Horse(prop.number, prop.color, prop.textColor)
 );
 
-let mediaRecorder;
-let recordedChunks = [];
-let isRecording = false;
-
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
@@ -191,12 +187,18 @@ function animate() {
     if (currentFrame >= totalAnimationFrames) {
         currentFrame = totalAnimationFrames;
     }
-    if (isRecording) {
-        requestAnimationFrame(animate);
-    }
+    requestAnimationFrame(animate);
 }
 
+let mediaRecorder;
+let recordedChunks = [];
+let isRecording = false;
+
 recordButton.addEventListener('click', () => {
+    // for just debugging.
+    animate();
+    return;
+
     if (isRecording) {
         // Stop recording
         isRecording = false;
