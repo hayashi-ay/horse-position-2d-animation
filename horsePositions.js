@@ -52,16 +52,6 @@ const horsePositions = [
             { x: -7, y: 20 }, { x: -10, y: 25 }, { x: -5, y: 40 }, { x: 0, y: 30 }
         ]
     },
-    // Estimated Data at 1:49: The gap is growing
-    {
-        second: 10,
-        direction: 'right',
-        // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
-        positions: [
-            { x: -1, y: 10 }, { x: -6.5, y: 10 }, { x: -4.5, y: 25 }, { x: -3, y: 20 },
-            { x: -7, y: 20 }, { x: -10, y: 25 }, { x: -5, y: 40 }, { x: 0, y: 30 }
-        ]
-    },
     {
         second: 10,
         direction: 'left',
