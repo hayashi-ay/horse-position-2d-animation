@@ -1,14 +1,29 @@
 const canvas = document.getElementById('animationCanvas');
 const recordButton = document.getElementById('recordButton');
 const debugTime = document.getElementById('debugTime');
-
 const ctx = canvas.getContext('2d');
-const ballRadius = 12;
-const FPS = 60;
+
+const CONFIG = {
+    BALL_RADIUS: 12,
+    FPS: 60,
+    TOP_HORSE_MARGIN: 50,
+    VIDEO_START_TIME_OFFSET: (1 * 60) + 39,
+    MEDIA_RECORDER_OPTIONS: { mimeType: 'video/webm; codecs=vp9' },
+    HORSES: [
+        { number: "1", color: "white", textColor: "black" },
+        { number: "2", color: "black", textColor: "white" },
+        { number: "3", color: "red", textColor: "white" },
+        { number: "4", color: "blue", textColor: "white" },
+        { number: "5", color: "yellow", textColor: "black" },
+        { number: "6", color: "green", textColor: "white" },
+        { number: "7", color: "orange", textColor: "white" },
+        { number: "8", color: "pink", textColor: "white" },
+    ]
+};
 
 let currentFrame = 0;
 const totalAnimationDurationInSeconds = horsePositions[horsePositions.length - 1].second;
-const totalAnimationFrames = totalAnimationDurationInSeconds * FPS;
+const totalAnimationFrames = totalAnimationDurationInSeconds * CONFIG.FPS;
 
 class Horse {
     constructor(number, color, textColor, initX, initY) {
@@ -38,8 +53,8 @@ class Horse {
         const horseCanvas = document.createElement('canvas');
         const horseCtx = horseCanvas.getContext('2d');
         // Set canvas dimensions explicitly to avoid truncation issues
-        horseCanvas.width = ballRadius * 4; // Sufficient width for ball and triangle
-        horseCanvas.height = ballRadius * 4; // Sufficient height
+        horseCanvas.width = CONFIG.BALL_RADIUS * 4; // Sufficient width for ball and triangle
+        horseCanvas.height = CONFIG.BALL_RADIUS * 4; // Sufficient height
 
         const ballInnerRadius = 10;
         const ballSize = horseCanvas.width / 2; // Center the ball in the canvas
@@ -60,7 +75,7 @@ class Horse {
 
         // Draw the outer circle
         horseCtx.beginPath();
-        horseCtx.arc(ballSize, ballSize, ballRadius, 0 * Math.PI, 2 * Math.PI);
+        horseCtx.arc(ballSize, ballSize, CONFIG.BALL_RADIUS, 0 * Math.PI, 2 * Math.PI);
         horseCtx.strokeStyle = this.color;
         horseCtx.lineWidth = 1;
         horseCtx.stroke();
@@ -74,12 +89,12 @@ class Horse {
 
         horseCtx.beginPath();
         if (direction === 'left') {
-            triangleX = ballSize - ballRadius + 1; // Position for left-pointing triangle
+            triangleX = ballSize - CONFIG.BALL_RADIUS + 1; // Position for left-pointing triangle
             horseCtx.moveTo(triangleX, triangleY - triangleHeight / 2);
             horseCtx.lineTo(triangleX - triangleBase, triangleY);
             horseCtx.lineTo(triangleX, triangleY + triangleHeight / 2);
         } else { // 'right'
-            triangleX = ballSize + ballRadius - 1; // Position for right-pointing triangle
+            triangleX = ballSize + CONFIG.BALL_RADIUS - 1; // Position for right-pointing triangle
             horseCtx.moveTo(triangleX, triangleY - triangleHeight / 2);
             horseCtx.lineTo(triangleX + triangleBase, triangleY);
             horseCtx.lineTo(triangleX, triangleY + triangleHeight / 2);
@@ -98,18 +113,7 @@ class Horse {
     }
 }
 
-const horseProperties = [
-    { number: "1", color: "white", textColor: "black" },
-    { number: "2", color: "black", textColor: "white" },
-    { number: "3", color: "red", textColor: "white" },
-    { number: "4", color: "blue", textColor: "white" },
-    { number: "5", color: "yellow", textColor: "black" },
-    { number: "6", color: "green", textColor: "white" },
-    { number: "7", color: "orange", textColor: "white" },
-    { number: "8", color: "pink", textColor: "white" },
-];
-
-const horses = horseProperties.map((prop, i) =>
+const horses = CONFIG.HORSES.map((prop, i) =>
     new Horse(prop.number, prop.color, prop.textColor, horsePositions[0].positions[i].x, horsePositions[0].positions[i].y)
 );
 
@@ -128,9 +132,8 @@ for (const keyframe of horsePositions) {
     }
 }
 
-const options = { mimeType: 'video/webm; codecs=vp9' };
-if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-    console.error(`VP9 codec is not supported on this browser. MIME type: ${options.mimeType}`);
+if (!MediaRecorder.isTypeSupported(CONFIG.MEDIA_RECORDER_OPTIONS.mimeType)) {
+    console.error(`VP9 codec is not supported on this browser. MIME type: ${CONFIG.MEDIA_RECORDER_OPTIONS.mimeType}`);
 }
 
 let mediaRecorder;
@@ -140,10 +143,9 @@ let isRecording = false;
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-    const currentTimeInSeconds = currentFrame / FPS;
+    const currentTimeInSeconds = currentFrame / CONFIG.FPS;
 
-    const startSeconds = (1 * 60) + 39;
-    const totalSeconds = Math.floor(startSeconds + currentTimeInSeconds);
+    const totalSeconds = Math.floor(CONFIG.VIDEO_START_TIME_OFFSET + currentTimeInSeconds);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     debugTime.innerText = `Time: ${minutes}:${seconds.toString().padStart(2, '0')}`;
@@ -185,7 +187,6 @@ function animate() {
     }
 
     const topX = 0; // Lead horse is at x=0
-    const topHorseMargin = 50; // Margin from the edge of the canvas
 
     for (let i = 0; i < horses.length; i++) {
         const pos = interpolatedPositions[i];
@@ -195,10 +196,10 @@ function animate() {
         // (topX - pos.x) gives the distance *behind* the leader (positive value for trailing horses)
         if (currentAnimationDirection === 'left') {
             // Running left: leader at left margin, trailing horses to its right
-            horses[i].x = topHorseMargin + (topX - pos.x) * ballRadius * 2;
+            horses[i].x = CONFIG.TOP_HORSE_MARGIN + (topX - pos.x) * CONFIG.BALL_RADIUS * 2;
         } else { // currentAnimationDirection === 'right'
             // Running right: leader at right margin, trailing horses to its left
-            horses[i].x = canvas.width - topHorseMargin - (topX - pos.x) * ballRadius * 2;
+            horses[i].x = canvas.width - CONFIG.TOP_HORSE_MARGIN - (topX - pos.x) * CONFIG.BALL_RADIUS * 2;
         }
 
         horses[i].y = pos.y;
@@ -225,8 +226,8 @@ recordButton.addEventListener('click', () => {
         isRecording = true;
         currentFrame = 0;
 
-        const stream = canvas.captureStream(FPS);
-        mediaRecorder = new MediaRecorder(stream, options);
+        const stream = canvas.captureStream(CONFIG.FPS);
+        mediaRecorder = new MediaRecorder(stream, CONFIG.MEDIA_RECORDER_OPTIONS);
 
         mediaRecorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
