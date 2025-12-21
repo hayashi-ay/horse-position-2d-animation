@@ -29,6 +29,7 @@ class Horse {
         this.textColor = textColor;
         this.x = initX;
         this.y = initY;
+        this.rotation = 0; // Rotation in radians
         this._direction = 'left'; // Internal storage for direction
         this.canvas = this.createOffscreenCanvas(this._direction);
     }
@@ -105,8 +106,12 @@ class Horse {
     }
 
     draw() {
-        // Adjust drawing to center the offscreen canvas content relative to horse's x,y
-        ctx.drawImage(this.canvas, this.x - this.canvas.width / 2, this.y - this.canvas.height / 2);
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        // Draw centered at (0,0) after translation
+        ctx.drawImage(this.canvas, -this.canvas.width / 2, -this.canvas.height / 2);
+        ctx.restore();
     }
 }
 
@@ -153,13 +158,28 @@ function animate() {
     }
 
     let interpolatedPositions = [];
-    let currentAnimationDirection = 'left'; // Default for the current segment
+    let theta = 0;
+    let currentAnimationDirection = 'left';
 
     if (fromKeyFrame && toKeyFrame) {
-        currentAnimationDirection = fromKeyFrame.direction; // Get direction from the segment's start keyframe
         const timeInSegment = currentTimeInSeconds - fromKeyFrame.second;
         const segmentDuration = toKeyFrame.second - fromKeyFrame.second;
         const segmentProgress = timeInSegment / segmentDuration;
+
+        const fromDir = fromKeyFrame.direction || 'left';
+        const toDir = toKeyFrame.direction || fromDir;
+        currentAnimationDirection = fromDir; // Base direction for triangle, though rotation overrides visual
+
+        // Calculate Theta (Rotation Angle)
+        if (fromDir === 'left' && toDir === 'right') {
+            theta = segmentProgress * Math.PI;
+        } else if (fromDir === 'right' && toDir === 'left') {
+            theta = Math.PI + segmentProgress * Math.PI;
+        } else if (fromDir === 'right') {
+            theta = Math.PI;
+        } else {
+            theta = 0;
+        }
 
         for (let i = 0; i < horses.length; i++) {
             const fromPos = fromKeyFrame.positions[i];
@@ -171,31 +191,59 @@ function animate() {
             interpolatedPositions.push({ x: interpolatedX, y: interpolatedY });
         }
     } else {
-        // If before first keyframe or after last keyframe, use the last known state
+        // Last keyframe state
         const lastKeyFrame = horsePositions[horsePositions.length - 1];
-        currentAnimationDirection = lastKeyFrame.direction;
+        const lastDir = lastKeyFrame.direction || 'left';
+        theta = (lastDir === 'right') ? Math.PI : 0;
+        currentAnimationDirection = lastDir;
         for (let i = 0; i < horses.length; i++) {
             interpolatedPositions.push({ x: lastKeyFrame.positions[i].x, y: lastKeyFrame.positions[i].y });
         }
     }
 
-    const topX = 0; // Lead horse is at x=0
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const verticalScale = canvas.height / canvas.width; // Approx 1/3
 
     for (let i = 0; i < horses.length; i++) {
         const pos = interpolatedPositions[i];
-        horses[i].direction = currentAnimationDirection; // Set direction, triggers canvas regeneration if changed
+        
+        // 1. Calculate Base Position (as if direction is 'left')
+        // Lead horse (x=0) is at CONFIG.TOP_HORSE_MARGIN
+        const baseX = CONFIG.TOP_HORSE_MARGIN + (0 - pos.x) * CONFIG.BALL_RADIUS * 2;
+        const baseY = pos.y;
 
-        // Calculate x position based on direction
-        // (topX - pos.x) gives the distance *behind* the leader (positive value for trailing horses)
-        if (currentAnimationDirection === 'left') {
-            // Running left: leader at left margin, trailing horses to its right
-            horses[i].x = CONFIG.TOP_HORSE_MARGIN + (topX - pos.x) * CONFIG.BALL_RADIUS * 2;
-        } else { // currentAnimationDirection === 'right'
-            // Running right: leader at right margin, trailing horses to its left
-            horses[i].x = canvas.width - CONFIG.TOP_HORSE_MARGIN - (topX - pos.x) * CONFIG.BALL_RADIUS * 2;
+        // 2. Center coordinates relative to canvas center
+        const rx = baseX - cx;
+        // Un-squash Y to match X scale for rotation (assuming Y was screen coords)
+        const ry = (baseY - cy) / verticalScale; 
+
+        // 3. Rotate
+        // x' = x cos θ - y sin θ
+        // y' = x sin θ + y cos θ
+        const rx_rot = rx * Math.cos(theta) - ry * Math.sin(theta);
+        const ry_rot = rx * Math.sin(theta) + ry * Math.cos(theta);
+
+        // 4. Re-project to screen (Re-squash Y)
+        const finalX = cx + rx_rot;
+        const finalY = cy + ry_rot * verticalScale;
+
+        // Set properties
+        horses[i].x = finalX;
+        horses[i].y = finalY;
+        horses[i].rotation = theta;
+        
+        // Update direction for the triangle icon
+        // If we are rotating, the concept of 'left/right' icon is less strict, 
+        // but let's flip it at the 90-degree mark for cleanliness.
+        // Normalized theta check (0-2PI)
+        const normTheta = theta % (2 * Math.PI);
+        if (normTheta > Math.PI / 2 && normTheta < 3 * Math.PI / 2) {
+            horses[i].direction = 'right';
+        } else {
+            horses[i].direction = 'left';
         }
 
-        horses[i].y = pos.y;
         horses[i].draw();
     }
 

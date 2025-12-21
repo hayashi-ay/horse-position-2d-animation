@@ -13,24 +13,43 @@ This project generates 2D animations of horse positions during a race using HTML
 
 This project exclusively uses **HTML, CSS, and vanilla JavaScript**. It avoids modern frameworks, TypeScript, or ES6+ features that require a build toolchain. This approach ensures the project can be run directly in a browser without a complex local environment setup, sidestepping issues like Cross-Origin Resource Sharing (CORS) that often arise when serving assets or testing with more advanced JavaScript features without a dedicated server.
 
-## Animation Logic
+## Cornering Animation Logic (Proposed)
 
-The animation simulates a 1500-meter horse race. The `horsePositions.js` file stores keyframes in an array of objects. Each object contains the `second` of the keyframe and an array of `positions` for each horse.
+To simulate the horses running on a circular track (corners) and switching directions (e.g., from the backstretch to the homestretch), we will implement a field rotation mechanism.
 
--   **`x` position (horse lengths from lead):** Represents the horse's distance in horse lengths behind the current lead horse. A value of 0 indicates the horse is the lead horse. Negative values indicate the horse is ahead of the previous theoretical lead.
--   **`y` position (pixels):** Represents the horse's vertical position on the canvas. These values are pixel coordinates and are interpolated between keyframes.
+1.  **Corner Detection:**
+    -   A "corner" is identified when the `direction` property changes between the `fromKeyFrame` and `toKeyFrame` (e.g., from `'left'` to `'right'`).
 
-The `script.js` file orchestrates the animation:
+2.  **Rotation Center:**
+    -   The pivot point for the rotation is the center of the canvas:
+        ```javascript
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        ```
 
-1.  **Keyframe Search:** For each frame of the animation, the script calculates the `currentTimeInSeconds`. It then searches the `horsePositions` array to find the two keyframes that the current time falls between.
-2.  **Interpolation:** The horse's `x` and `y` positions are linearly interpolated between these two keyframes based on the `currentTimeInSeconds`. This allows for smooth animation even with unevenly spaced keyframes.
-3.  **Relative Positioning and Direction:** The animation displays horses relative to the lead horse (where `x=0`). The view depends on the `direction` property of the current keyframe segment ('left' or 'right').
-    *   A `topHorseMargin` (50 pixels) is used as the base offset for the leader.
-    *   **If direction is 'left'**: The lead horse is drawn at `topHorseMargin` from the left edge. Trailing horses are positioned to its right based on their `x` distance multiplied by `ballRadius * 2`.
-    *   **If direction is 'right'**: The lead horse is drawn at `topHorseMargin` from the right edge. Trailing horses are positioned to its left.
-    *   Each horse is drawn as a circle with its number, surrounded by an outer stroke, and a small triangle indicating its current direction.
+3.  **Interpolation & Rotation:**
+    -   **Linear Phase:** Calculate the horses' positions as if they were on a horizontal straight line. It is crucial to center this line relative to the canvas center (lead horse or pack center aligned to `cx`) before rotation, or use the standard "Lead at Margin" logic and rotate the entire resulting coordinate system.
+    -   **Angle Calculation:** Interpolate a rotation angle (`theta`) based on the segment progress.
+        -   Start Angle: 0 radians (Standard 'left' view).
+        -   End Angle: Math.PI radians (Standard 'right' view).
+    -   **Coordinate Transformation:**
+        -   Translate the horse's position so the canvas center is the origin `(0, 0)`.
+        -   Apply 2D rotation:
+            ```javascript
+            x' = x * cos(theta) - y * sin(theta)
+            y' = x * sin(theta) + y * cos(theta)
+            ```
+    -   **Elliptical Compression (Aspect Ratio):**
+        -   Since the canvas is wider than it is tall (e.g., 360x120), a straight line of horses rotating 90 degrees would exceed the vertical bounds.
+        -   We must compress the position when it aligns with the vertical axis.
+        -   Scale factor: `verticalScale = canvas.height / canvas.width` (or a specific ratio like 0.4).
+        -   Apply scaling to the rotated coordinates, often primarily affecting the dimension that was originally horizontal. Or simply projecting onto an ellipse.
 
-This approach allows the animation to dynamically adjust its view and direction, keeping the leading horses in focus.
+4.  **Rendering:**
+    -   Translate the coordinates back to the canvas center `(cx, cy)` and draw the horses.
+    -   The individual horse icons/orientation might also need to rotate to match the track tangent, or remain upright depending on the desired aesthetic.
+
+This logic allows for a smooth visual transition between the two viewing directions without an abrupt cut.
 
 ## Keyframe Data (`horsePositions.js`)
 
@@ -56,6 +75,7 @@ Example keyframe:
 {
     second: 33,
     direction: 'left',
+    rotation: 15,
     // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
     positions: [
         { x: -0.5, y: 25 }, { x: -5, y: 10 }, { x: -3.5, y: 15 }, { x: -1.5, y: 10 },
