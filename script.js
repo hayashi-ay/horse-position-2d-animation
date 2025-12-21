@@ -114,27 +114,8 @@ class Horse {
 }
 
 const horses = CONFIG.HORSES.map((prop, i) =>
-    new Horse(prop.number, prop.color, prop.textColor, horsePositions[0].positions[i].x, horsePositions[0].positions[i].y)
+    new Horse(prop.number, prop.color, prop.textColor)
 );
-
-// Pre-process horsePositions to ensure direction is set for all keyframes
-let lastDirection = 'left'; // Default initial direction
-for (const keyframe of horsePositions) {
-    if (!keyframe.direction) {
-        keyframe.direction = lastDirection;
-    } else {
-        // Ensure the direction is valid, otherwise default to 'left'
-        if (keyframe.direction !== 'left' && keyframe.direction !== 'right') {
-            console.warn(`Invalid direction '${keyframe.direction}' in keyframe at second ${keyframe.second}. Defaulting to 'left'.`);
-            keyframe.direction = 'left';
-        }
-        lastDirection = keyframe.direction;
-    }
-}
-
-if (!MediaRecorder.isTypeSupported(CONFIG.MEDIA_RECORDER_OPTIONS.mimeType)) {
-    console.error(`VP9 codec is not supported on this browser. MIME type: ${CONFIG.MEDIA_RECORDER_OPTIONS.mimeType}`);
-}
 
 let mediaRecorder;
 let recordedChunks = [];
