@@ -88,11 +88,11 @@ class Horse {
         ctx.restore();
 
         // 2. Draw the upright number
-        ctx.font = "10px Arial";
+        ctx.font = "16px Arial";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillStyle = this.textColor;
-        ctx.fillText(this.number, 0, 0);
+        ctx.fillText(this.number, 0, 2);
 
         ctx.restore();
     }
