@@ -73,7 +73,6 @@ class Horse {
         horseCtx.fillStyle = this.color;
         horseCtx.fill();
         horseCtx.closePath();
-
         return horseCanvas;
     }
 
@@ -82,12 +81,14 @@ class Horse {
         ctx.translate(this.x, this.y);
 
         // 1. Draw the rotated body (circle + triangle)
-        ctx.save();
+        ctx.save(); // without this save and restore, the following drawing also rotate
         ctx.rotate(this.rotation);
         ctx.drawImage(this.canvas, -this.canvas.width / 2, -this.canvas.height / 2);
         ctx.restore();
 
         // 2. Draw the upright number
+        // 本当はcreateOffscreenCanvasでやりたいが数字が反転してしまうのでできない
+        // 描画によって文字がカクつくが仕方がない
         ctx.font = "16px Arial";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
