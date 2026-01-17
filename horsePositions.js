@@ -148,7 +148,7 @@ const horsePositions = [
         // 1: PINK, 2: BLUE, 3: WHITE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
         positions: [
             { x: -2.1, y: 35 }, { x: -5.3, y: 33 }, { x: -3.9, y: 20 }, { x: -1.0, y: 30 },
-            { x: -7.8, y: 35 }, { x: -9.8, y: 34 }, { x: -6.6, y: 22 }, { x: 0, y: 13 }
+            { x: -6.8, y: 40 }, { x: -9.8, y: 34 }, { x: -6.6, y: 22 }, { x: 0, y: 13 }
         ]
     },
     // At 2:38, is's confirmed that yellow passes orange.
