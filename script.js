@@ -220,7 +220,10 @@ function animate() {
         horses[i].draw();
     }
 
-    currentFrame += 1;
+    if (isRecording) {
+        currentFrame += 1;
+    }
+    
     if (currentFrame >= totalAnimationFrames) {
         // end recording
         return;
@@ -233,10 +236,12 @@ let recordedChunks = [];
 let isRecording = false;
 
 animate();
+currentFrame = 0
+isRecording = true;
 
 recordButton.addEventListener('click', () => {
     // for just debugging.
-    animate();
+    isRecording = !isRecording;
     return;
 
     if (isRecording) {
