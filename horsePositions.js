@@ -48,8 +48,8 @@ const horsePositions = [
         direction: 'left',
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
         positions: [
-            { x: -1.5, y: 20 }, { x: -5.0, y: 13 }, { x: -4, y: 35 }, { x: -3, y: 25 },
-            { x: -5.3, y: 38 }, { x: -9.0, y: 53 }, { x: -4.6, y: 55 }, { x: 0, y: 36 }
+            { x: -1.5, y: 20 }, { x: -5.1, y: 15 }, { x: -4.1, y: 32 }, { x: -3, y: 25 },
+            { x: -5.8, y: 38 }, { x: -9.0, y: 53 }, { x: -4.6, y: 55 }, { x: 0, y: 36 }
         ]
     },
     // At 1:48
@@ -59,7 +59,7 @@ const horsePositions = [
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
         positions: [
             { x: -2.0, y: 25 }, { x: -5.3, y: 18 }, { x: -4.2, y: 30 }, { x: -3, y: 32 },
-            { x: -5.6, y: 40 }, { x: -10.0, y: 53 }, { x: -4.9, y: 55 }, { x: 0, y: 30 }
+            { x: -6.0, y: 40 }, { x: -10.0, y: 53 }, { x: -4.9, y: 55 }, { x: 0, y: 30 }
         ]
     },
     {
@@ -68,7 +68,7 @@ const horsePositions = [
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
         positions: [
             { x: -2.0, y: 25 }, { x: -5.3, y: 18 }, { x: -4.2, y: 30 }, { x: -3, y: 32 },
-            { x: -5.6, y: 40 }, { x: -10.0, y: 53 }, { x: -4.9, y: 55 }, { x: 0, y: 30 }
+            { x: -6.6, y: 40 }, { x: -10.0, y: 53 }, { x: -4.9, y: 55 }, { x: 0, y: 30 }
         ]
     },
     // At 1:55, all horses' positions can be confirmed
@@ -77,8 +77,8 @@ const horsePositions = [
         direction: 'right',
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: ORANGE, 6: BLACK, 7: YELLOW, 8: GREEN
         positions: [
-            { x: -1.5, y: 15 }, { x: -6.5, y: 15 }, { x: -5, y: 20 }, { x: -2, y: 25 },
-            { x: -7.5, y: 20 }, { x: -10.5, y: 20 }, { x: -5.8, y: 45 }, { x: 0, y: 15 }
+            { x: -1.5, y: 20 }, { x: -6.5, y: 15 }, { x: -5, y: 28 }, { x: -2.5, y: 28 },
+            { x: -8.0, y: 44 }, { x: -10.5, y: 50 }, { x: -5.8, y: 45 }, { x: 0, y: 15 }
         ]
     },
     // Estimated Data at 2:05, it's assumed that black passed orange at the time
