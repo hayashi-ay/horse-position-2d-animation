@@ -87,8 +87,8 @@ const horsePositions = [
         direction: 'right',
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE, 7: YELLOW, 8: GREEN
         positions: [
-            { x: -0.9, y: 25 }, { x: -7, y: 15 }, { x: -4, y: 17 }, { x: -1.8, y: 15 },
-            { x: -7.5, y: 20 }, { x: -10.5, y: 20 }, { x: -5.8, y: 45 }, { x: 0, y: 15 }
+            { x: -0.9, y: 37 }, { x: -7, y: 20 }, { x: -4, y: 17 }, { x: -1.8, y: 20 },
+            { x: -7.5, y: 30 }, { x: -10.5, y: 20 }, { x: -5.8, y: 35 }, { x: 0, y: 12 }
         ]
     },
     // At 2:12, it's confirmed that black passes orange.
@@ -98,7 +98,7 @@ const horsePositions = [
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
         positions: [
             { x: -0.5, y: 25 }, { x: -5, y: 10 }, { x: -3.5, y: 15 }, { x: -1.5, y: 10 },
-            { x: -7, y: 35 }, { x: -10, y: 50 }, { x: -6, y: 25 }, { x: 0, y: 10 }
+            { x: -7.5, y: 35 }, { x: -10, y: 50 }, { x: -6.5, y: 25 }, { x: 0, y: 10 }
         ]
     },
     // Estimated at 2:16, Copy data at 2:12
@@ -107,8 +107,8 @@ const horsePositions = [
         direction: 'right',
         // 1: PINK, 2: WHITE, 3: BLUE, 4: RED, 5: BLACK, 6: ORANGE 7: YELLOW, 8: GREEN
         positions: [
-            { x: -0.5, y: 25 }, { x: -5, y: 10 }, { x: -3.5, y: 15 }, { x: -1.5, y: 10 },
-            { x: -7, y: 35 }, { x: -10, y: 50 }, { x: -6, y: 25 }, { x: 0, y: 10 }
+            { x: -0.5, y: 37 }, { x: -4.8, y: 15 }, { x: -3.3, y: 25 }, { x: -1.4, y: 12 },
+            { x: -6.8, y: 40 }, { x: -9.8, y: 55 }, { x: -5.8, y: 30 }, { x: 0, y: 10 }
         ]
     },
     // Estimated at 2:21, green is approaching inner
