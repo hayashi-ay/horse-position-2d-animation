@@ -92,7 +92,7 @@ class Horse {
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillStyle = this.textColor;
-        ctx.fillText(this.number, 0, 2);
+        ctx.fillText(this.number, 0, 2); // fontによってはy軸の位置を調整した方が真ん中にくる
 
         ctx.restore();
     }
