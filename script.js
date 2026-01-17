@@ -4,9 +4,6 @@ const debugTime = document.getElementById('debugTime');
 const actualTime = document.getElementById('actualTime');
 const ctx = canvas.getContext('2d');
 
-const dressImg = new Image();
-dressImg.src = 'blue_a_transparent.png';
-
 const CONFIG = {
     BALL_RADIUS: 12,
     FPS: 60,
@@ -222,50 +219,12 @@ function animate() {
         horses[i].draw();
     }
 
-    drawRanking(interpolatedPositions);
-
     currentFrame += 1;
     if (currentFrame >= totalAnimationFrames) {
         // end recording
         return;
     }
     requestAnimationFrame(animate);
-}
-
-function drawRanking(interpolatedPositions) {
-    const ranking = interpolatedPositions
-        .map((pos, i) => ({ index: i, x: pos.x }))
-        .sort((a, b) => b.x - a.x)
-        .slice(0, 3);
-
-    const boxSize = 20;
-    const startX = 10;
-    const startY = 10;
-    const gap = 10;
-
-    ranking.forEach((item, i) => {
-        const horse = horses[item.index];
-        const y = startY + i * (boxSize + gap)
-
-        // 2. Draw Horse Box (Silks Color + Number)
-        const horseBoxX = startX;
-        ctx.fillStyle = horse.color;
-        ctx.fillRect(horseBoxX, y, boxSize, boxSize);
-
-        ctx.fillStyle = horse.textColor;
-        ctx.font = "bold 12px Arial";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(horse.number, horseBoxX + boxSize / 2, y + boxSize / 2);
-
-        // 3. Draw Wedding Dress Icon (blue_gown.png) to the right
-        const iconX = horseBoxX + boxSize + 5;
-        if (dressImg.complete && dressImg.naturalWidth > 0) {
-            const aspect = dressImg.naturalWidth / dressImg.naturalHeight;
-            const iconWidth = boxSize * aspect;
-            ctx.drawImage(dressImg, iconX, y, iconWidth, boxSize);
-        }
-    });
 }
 
 let mediaRecorder;
