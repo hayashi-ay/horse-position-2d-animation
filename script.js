@@ -236,6 +236,7 @@ let recordedChunks = [];
 let isRecording = false;
 
 animate();
+//currentFrame = CONFIG.FPS * (55-39)
 currentFrame = 0
 isRecording = true;
 
