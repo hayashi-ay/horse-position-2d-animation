@@ -19,7 +19,7 @@ const CONFIG = {
         { number: "5", color: "yellow", textColor: "black" },
         { number: "6", color: "green", textColor: "white" },
         { number: "7", color: "orange", textColor: "white" },
-        { number: "8", color: "pink", textColor: "black" },
+        { number: "8", color: "hotpink", textColor: "white" },
     ]
 };
 
