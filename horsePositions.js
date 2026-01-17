@@ -158,7 +158,7 @@ const horsePositions = [
         // 1: PINK, 2: BLUE, 3: WHITE, 4: RED, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
         positions: [
             { x: -3.1, y: 38 }, { x: -4, y: 45 }, { x: -3.0, y: 12 }, { x: -0.2, y: 38 },
-            { x: -6, y: 44 }, { x: -9, y: 30 }, { x: -7.8, y: 23 }, { x: 0, y: 14 }
+            { x: -6.6, y: 44 }, { x: -9.7, y: 30 }, { x: -7.8, y: 23 }, { x: 0, y: 14 }
         ]
     },
     // At 2:40
@@ -168,7 +168,7 @@ const horsePositions = [
         // 1: PINK, 2: BLUE, 3: WHITE, 4: RED, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
         positions: [
             { x: -3.2, y: 39 }, { x: -4.4, y: 55 }, { x: -2.8, y: 13 }, { x: -0.1, y: 40 },
-            { x: -5.9, y: 43 }, { x: -8.8, y: 28 }, { x: -7.9, y: 24 }, { x: 0, y: 15 }
+            { x: -6.5, y: 43 }, { x: -9.6, y: 28 }, { x: -7.9, y: 24 }, { x: 0, y: 15 }
         ]
     },
     // At 2:41
@@ -178,7 +178,7 @@ const horsePositions = [
         // 1: PINK, 2: BLUE, 3: WHITE, 4: RED, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
         positions: [
             { x: -3.2, y: 30 }, { x: -4.4, y: 55 }, { x: -2.7, y: 20 }, { x: -0.1, y: 40 },
-            { x: -5.9, y: 43 }, { x: -8.8, y: 28 }, { x: -7.9, y: 24 }, { x: 0, y: 15 }
+            { x: -6.4, y: 43 }, { x: -9.7, y: 26 }, { x: -7.9, y: 24 }, { x: 0, y: 15 }
         ]
     },
     // At 2:44 in the video, blue catches up to pink.
@@ -187,8 +187,8 @@ const horsePositions = [
         direction: 'left',
         // 1: PINK, 2: BLUE, 3: RED, 4: WHITE, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
         positions: [
-            { x: -4.6, y: 20 }, { x: -4.8, y: 40 }, { x: -2.5, y: 28 }, { x: 0, y: 40 },
-            { x: -6, y: 35 }, { x: -9.2, y: 28 }, { x: -7.2, y: 20 }, { x: 0, y: 13 }
+            { x: -4.4, y: 20 }, { x: -4.6, y: 45 }, { x: -2.5, y: 28 }, { x: 0, y: 40 },
+            { x: -6.3, y: 35 }, { x: -9.6, y: 28 }, { x: -7.8, y: 22 }, { x: 0, y: 13 }
         ]
     },
     // At 2:45 in the video (66 seconds into animation), blue passes pink.
@@ -197,8 +197,8 @@ const horsePositions = [
         direction: 'left',
         // 1: BLUE, 2: PINK, 3: RED, 4: WHITE, 5: BLACK, 6: YELLOW 7: ORANGE, 8: GREEN
         positions: [
-            { x: -4.8, y: 20 }, { x: -4.9, y: 40 }, { x: -2.4, y: 29 }, { x: 0, y: 40 },
-            { x: -5.8, y: 35 }, { x: -9.3, y: 28 }, { x: -7.1, y: 20 }, { x: -0.1, y: 13 }
+            { x: -4.6, y: 20 }, { x: -4.7, y: 44 }, { x: -2.4, y: 29 }, { x: 0, y: 40 },
+            { x: -6.2, y: 33 }, { x: -9.5, y: 30 }, { x: -7.5, y: 23 }, { x: -0.1, y: 13 }
         ]
     },
     // At 2:47, black passes white.
@@ -207,8 +207,8 @@ const horsePositions = [
         direction: 'left',
         // 1: BLUE, 2: PINK, 3: RED, 4: BLACK, 5: WHITE, 6: YELLOW 7: ORANGE, 8: GREEN
         positions: [
-            { x: -5.0, y: 20 }, { x: -4.8, y: 40 }, { x: -2.3, y: 30 }, { x: 0, y: 40 },
-            { x: -5.6, y: 35 }, { x: -9.2, y: 28 }, { x: -7.3, y: 20 }, { x: -0.2, y: 13 }
+            { x: -5.0, y: 20 }, { x: -4.8, y: 43 }, { x: -2.3, y: 30 }, { x: 0, y: 40 },
+            { x: -6.0, y: 34 }, { x: -9.6, y: 32 }, { x: -7.6, y: 24 }, { x: -0.2, y: 13 }
         ]
     },
     // At 2:49
@@ -217,8 +217,8 @@ const horsePositions = [
         direction: 'left',
         // 1: BLUE, 2: PINK, 3: RED, 4: BLACK, 5: WHITE, 6: YELLOW 7: ORANGE, 8: GREEN
         positions: [
-            { x: -5.2, y: 20 }, { x: -4.7, y: 40 }, { x: -2.7, y: 35 }, { x: 0, y: 40 },
-            { x: -5.2, y: 35 }, { x: -9.5, y: 30 }, { x: -7.8, y: 20 }, { x: -0.5, y: 13 }
+            { x: -5.2, y: 20 }, { x: -4.6, y: 38 }, { x: -2.7, y: 35 }, { x: 0, y: 40 },
+            { x: -5.8, y: 36 }, { x: -9.7, y: 34 }, { x: -7.8, y: 22 }, { x: -0.5, y: 13 }
         ]
     }
 ];
